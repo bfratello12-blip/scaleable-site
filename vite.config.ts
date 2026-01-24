@@ -18,7 +18,7 @@
         'lucide-react@0.487.0': 'lucide-react',
         'input-otp@1.4.2': 'input-otp',
         'figma:asset/db1b677898e76d405af62df95ab8277374acb421.png': path.resolve(__dirname, './src/assets/scaleable_dashboard2.png'),
-        'figma:asset/d82ab57a4d53539cff20cade376cc42e06e55865.png': path.resolve(__dirname, './src/assets/scaleable_trend_charts.png'),
+        'figma:asset/d82ab57a4d53539cff20cade376cc42e06e55865.png': path.resolve(__dirname, './src/assets/scaleable_trendchartgradients.png'),
         'figma:asset/a7f49483b848d223e076c7e513790ff05d591ba1.png': path.resolve(__dirname, './src/assets/scaleable_monthlyperformance.png'),
         'figma:asset/9e77f0b9e3f695977cea5c5b951b71cf2270fb05.png': path.resolve(__dirname, './src/assets/9e77f0b9e3f695977cea5c5b951b71cf2270fb05.png'),
         'figma:asset/51b3ac02cc07461900a5f0fc5e09b2acd99a43b4.png': path.resolve(__dirname, './src/assets/scaleable_eventperformance.png'),
