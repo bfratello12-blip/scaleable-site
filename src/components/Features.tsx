@@ -1,6 +1,6 @@
-import attributionImage from "figma:asset/01ac107915a596445fce2ed89010807468614e3e.png";
-import performanceImage from "figma:asset/51b3ac02cc07461900a5f0fc5e09b2acd99a43b4.png";
-import monthlyImage from "figma:asset/a7f49483b848d223e076c7e513790ff05d591ba1.png";
+import attributionImage from "../assets/Ad Attribution Trend Chart_Profit.png";
+import performanceImage from "../assets/Event Performance Comparison_Profit.png";
+import monthlyImage from "../assets/Monthly Performance Table_Profit.png";
 import { BarChart3 } from "lucide-react";
 import { motion } from "motion/react";
 

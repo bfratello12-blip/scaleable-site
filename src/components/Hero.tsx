@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { ArrowRight, TrendingUp, Play } from "lucide-react";
-import dashboardImage from "figma:asset/db1b677898e76d405af62df95ab8277374acb421.png";
+import dashboardImage from "../assets/ScaleAble Dashboard KPI Cards_Profit.png";
 import { motion } from "motion/react";
 
 export function Hero() {

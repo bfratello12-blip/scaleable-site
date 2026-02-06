@@ -1,6 +1,7 @@
 import { CheckCircle2, TrendingUp, Package, Calendar } from "lucide-react";
 import { Card } from "./ui/card";
-import trendsImage from "figma:asset/d82ab57a4d53539cff20cade376cc42e06e55865.png";
+import profitTrendsImage from "../assets/Profit and Ad Spend Trend Chart.png";
+import revenueTrendsImage from "../assets/Revenue ASP and MER Trend Charts_Profit.png";
 import { motion } from "motion/react";
 
 export function Solution() {
@@ -82,15 +83,24 @@ export function Solution() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative max-w-6xl mx-auto"
+          className="relative max-w-7xl mx-auto"
         >
           <div className="absolute -inset-6 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-3xl blur-3xl" />
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-border bg-white">
-            <img
-              src={trendsImage}
-              alt="Profit vs Spend Analysis"
-              className="w-full h-auto"
-            />
+          <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="rounded-2xl overflow-hidden shadow-2xl border-2 border-border bg-white">
+              <img
+                src={profitTrendsImage}
+                alt="Profit and Ad Spend Trend Chart"
+                className="w-full h-auto"
+              />
+            </div>
+            <div className="rounded-2xl overflow-hidden shadow-2xl border-2 border-border bg-white">
+              <img
+                src={revenueTrendsImage}
+                alt="Revenue, ASP, and MER Trend Charts"
+                className="w-full h-auto"
+              />
+            </div>
           </div>
         </motion.div>
       </div>
