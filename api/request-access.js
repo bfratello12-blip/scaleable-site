@@ -73,7 +73,7 @@ module.exports = async function handler(req, res) {
 
 	try {
 		const result = await resend.emails.send({
-			from: "onboarding@resend.dev",
+			from: "ScaleAble <support@scaleableapp.com>",
 			to: process.env.REQUEST_ACCESS_TO_EMAIL || "support@scaleableapp.com",
 			replyTo: email,
 			subject: "New ScaleAble Access Request",
