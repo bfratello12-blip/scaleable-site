@@ -40,6 +40,9 @@ export function RequestAccessModal({
 	const [other, setOther] = useState(false);
 	const [otherText, setOtherText] = useState("");
 	const [notRunningAds, setNotRunningAds] = useState(false);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [submitError, setSubmitError] = useState("");
+	const [submitSuccess, setSubmitSuccess] = useState("");
 
 	const isSubmitDisabled = useMemo(
 		() => email.trim().length === 0 || storeUrl.trim().length === 0,
@@ -70,14 +73,20 @@ export function RequestAccessModal({
 	}
 
 	const handleClose = () => {
+		setIsSubmitting(false);
+		setSubmitError("");
+		setSubmitSuccess("");
 		onOpenChange(false);
 	};
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		if (isSubmitDisabled) {
+		if (isSubmitDisabled || isSubmitting) {
 			return;
 		}
+		setIsSubmitting(true);
+		setSubmitError("");
+		setSubmitSuccess("");
 
 		const payload: FormState = {
 			email: email.trim(),
@@ -92,7 +101,25 @@ export function RequestAccessModal({
 			},
 		};
 
-		console.log("Request Access", payload);
+		try {
+			const response = await fetch("/api/request-access", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(payload),
+			});
+
+			if (!response.ok) {
+				throw new Error("Request failed");
+			}
+
+			setSubmitSuccess("Thanks — we’ll review your store and follow up by email.");
+		} catch (error) {
+			setSubmitError("Something went wrong. Please try again in a moment.");
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	return createPortal(
@@ -101,12 +128,12 @@ export function RequestAccessModal({
 				className="fixed inset-0 bg-black/50 backdrop-blur-sm"
 				onClick={handleClose}
 			/>
-			<div className="fixed inset-0 flex items-start justify-center overflow-y-auto px-6 py-6 sm:items-center sm:px-8 sm:py-12">
+			<div className="fixed inset-0 flex items-start justify-center overflow-y-auto overscroll-contain px-6 py-6 touch-pan-y sm:items-center sm:px-8 sm:py-12">
 				<div className="w-[92%] max-w-xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)] sm:w-full">
 					<div className="rounded-[calc(1rem-8px)] bg-white">
 						<form
 							onSubmit={handleSubmit}
-							className="flex max-h-[85svh] flex-col overflow-y-auto overscroll-contain rounded-xl border border-transparent bg-white"
+							className="flex flex-col overflow-visible rounded-xl border border-transparent bg-white"
 						>
 							<div className="relative overflow-hidden rounded-t-xl bg-[#e6f0ff]">
 								<div
@@ -361,7 +388,7 @@ export function RequestAccessModal({
 
 							<div className="h-8" />
 
-							<div className="sticky bottom-0 mx-3 mb-3 border-t border-blue-100/70 bg-blue-50/30 pb-10">
+							<div className="mx-3 mb-3 border-t border-blue-100/70 bg-blue-50/30 pb-10 sm:sticky sm:bottom-0">
 								<div className="pt-6">
 									<div className="flex flex-col items-start justify-between gap-4 px-4 sm:flex-row sm:items-center">
 										<p className="text-sm text-slate-500">
@@ -380,11 +407,19 @@ export function RequestAccessModal({
 											</button>
 											<button
 												type="submit"
-												disabled={isSubmitDisabled}
+												disabled={isSubmitDisabled || isSubmitting || Boolean(submitSuccess)}
 												className="rounded-lg bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 disabled:cursor-not-allowed disabled:from-slate-300 disabled:to-slate-300"
 											>
-												Request Access
+												{isSubmitting ? "Sending..." : "Request Access"}
 											</button>
+										</div>
+										<div className="mt-3 text-sm" aria-live="polite">
+											{submitSuccess && (
+												<p className="text-emerald-600">{submitSuccess}</p>
+											)}
+											{submitError && !submitSuccess && (
+												<p className="text-rose-600">{submitError}</p>
+											)}
 										</div>
 									</div>
 								</div>
