@@ -1,9 +1,4 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "build",
-  "functions": {
-    "api/request-access.ts": {
-      "runtime": "nodejs20.x"
-    }
-  }
+  "outputDirectory": "build"
 }
