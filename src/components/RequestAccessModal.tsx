@@ -106,7 +106,7 @@ export function RequestAccessModal({
 					<div className="rounded-[calc(1rem-8px)] bg-white">
 						<form
 							onSubmit={handleSubmit}
-							className="flex max-h-[85vh] flex-col overflow-hidden rounded-xl border border-transparent bg-white"
+							className="flex max-h-[85svh] flex-col overflow-y-auto overscroll-contain rounded-xl border border-transparent bg-white"
 						>
 							<div className="relative overflow-hidden rounded-t-xl bg-[#e6f0ff]">
 								<div
@@ -201,7 +201,7 @@ export function RequestAccessModal({
 								</div>
 							</div>
 
-							<div className="flex-1 space-y-10 overflow-y-auto px-7 pb-10 pt-10">
+							<div className="flex-1 space-y-10 px-7 pb-10 pt-10">
 								<div className="space-y-4 rounded-2xl border border-blue-100/70 bg-blue-50/40 px-5 pb-7 pt-6 shadow-sm">
 									<p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-600">
 										Store Info
