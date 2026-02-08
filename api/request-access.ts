@@ -10,7 +10,7 @@ const escapeHtml = (value: string) =>
 		.replace(/\"/g, "&quot;")
 		.replace(/'/g, "&#039;");
 
-module.exports = async function handler(req, res) {
+module.exports = async function handler(req: any, res: any) {
 	if (req.method === "OPTIONS") {
 		res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
 		res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -36,14 +36,14 @@ module.exports = async function handler(req, res) {
 		return res.status(400).json({ error: "Missing required fields" });
 	}
 
-	const selectedChannels = Array.isArray(channelsInput)
+	const selectedChannels: string[] = Array.isArray(channelsInput)
 		? channelsInput.filter((value) => typeof value === "string")
 		: [
 				channelsInput.googleAds ? "Google Ads" : null,
 				channelsInput.metaAds ? "Meta (Facebook / Instagram)" : null,
 				channelsInput.other ? "Other" : null,
 				channelsInput.notRunningAds ? "Not running ads yet" : null,
-		  ].filter(Boolean);
+		  ].filter((value): value is string => Boolean(value));
 
 	const channelList =
 		selectedChannels.length > 0
@@ -72,8 +72,8 @@ module.exports = async function handler(req, res) {
 	const text = `New ScaleAble Access Request\n\nEmail: ${email}\nStore URL: ${storeUrl}\nAverage Monthly Revenue: ${averageRevenue || "Not specified"}\nChannels: ${selectedChannels.join(", ") || "None selected"}\nOther details: ${otherText || "N/A"}`;
 
 	try {
-		await resend.emails.send({
-			from: "ScaleAble <onboarding@resend.dev>",
+		const result = await resend.emails.send({
+			from: "onboarding@resend.dev",
 			to: process.env.REQUEST_ACCESS_TO_EMAIL || "support@scaleableapp.com",
 			replyTo: email,
 			subject: "New ScaleAble Access Request",
@@ -81,8 +81,15 @@ module.exports = async function handler(req, res) {
 			text,
 		});
 
+		if (!result?.data?.id) {
+			console.error("Resend send failed", result?.error || result);
+			return res.status(500).json({ ok: false });
+		}
+
 		return res.status(200).json({ ok: true });
 	} catch (error) {
 		return res.status(500).json({ error: "Failed to send email" });
 	}
 };
+
+export {};
