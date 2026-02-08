@@ -56,8 +56,8 @@ export function CTA() {
                 Book a Demo
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="ghost" className="w-full sm:w-auto text-base font-bold px-8 text-white hover:bg-white/10 border border-white/30">
-                Get Started
+              <Button size="lg" variant="ghost" asChild className="w-full sm:w-auto text-base font-bold px-8 text-white hover:bg-white/10 border border-white/30">
+                <a href="#pricing">Get Started</a>
               </Button>
             </motion.div>
 

@@ -91,10 +91,13 @@ export function Hero() {
           >
             <Button
               size="lg"
+              asChild
               className="w-full sm:w-auto text-base font-semibold px-8 bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity"
             >
-              Get Started
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <a href="#pricing">
+                Get Started
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </a>
             </Button>
             <Button
               size="lg"

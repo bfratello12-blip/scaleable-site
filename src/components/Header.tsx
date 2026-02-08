@@ -39,7 +39,9 @@ export function Header() {
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-3">
             <Button variant="ghost" className="font-semibold">Sign In</Button>
-            <Button className="font-semibold shadow-sm bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity">Get Started</Button>
+            <Button asChild className="font-semibold shadow-sm bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity">
+              <a href="#pricing">Get Started</a>
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -71,7 +73,11 @@ export function Header() {
               ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-border mt-2">
                 <Button variant="ghost" className="w-full font-semibold">Sign In</Button>
-                <Button className="w-full font-semibold bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity">Get Started</Button>
+                <Button asChild className="w-full font-semibold bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity">
+                  <a href="#pricing" onClick={() => setMobileMenuOpen(false)}>
+                    Get Started
+                  </a>
+                </Button>
               </div>
             </nav>
           </div>

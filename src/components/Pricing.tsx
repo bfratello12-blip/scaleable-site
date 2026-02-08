@@ -1,9 +1,12 @@
 import { Check, Star, DollarSign } from "lucide-react";
+import { useState } from "react";
 import { Button } from "./ui/button";
+import { RequestAccessModal } from "./RequestAccessModal";
 import { Card } from "./ui/card";
 import { motion } from "motion/react";
 
 export function Pricing() {
+  const [requestAccessOpen, setRequestAccessOpen] = useState(false);
   const plans = [
     {
       name: "ScaleAble DIY",
@@ -140,17 +143,34 @@ export function Pricing() {
                 </div>
 
                 {/* Primary CTA Button */}
-                <Button
-                  size="lg"
-                  className="w-full mb-3 font-semibold text-base bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity"
-                >
-                  Get Started
-                </Button>
+                {plan.name === "ScaleAble Managed" ? (
+                  <Button
+                    size="lg"
+                    className="w-full mb-3 font-semibold text-base bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity"
+                  >
+                    Book a Call
+                  </Button>
+                ) : (
+                  <Button
+                    size="lg"
+                    className="w-full mb-3 font-semibold text-base bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity"
+                    type="button"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      setRequestAccessOpen(true);
+                    }}
+                  >
+                    Request Access
+                  </Button>
+                )}
 
                 {/* Secondary CTA */}
-                <button className="w-full mb-8 text-sm font-medium text-primary hover:text-primary/80 transition-colors">
-                  {plan.secondaryCta}
-                </button>
+                {plan.name !== "ScaleAble Managed" && (
+                  <button className="w-full mb-8 text-sm font-medium text-primary hover:text-primary/80 transition-colors">
+                    {plan.secondaryCta}
+                  </button>
+                )}
 
                 {/* Features */}
                 <div className="space-y-4 flex-grow">
@@ -218,6 +238,11 @@ export function Pricing() {
             . No credit card required.
           </p>
         </motion.div>
+
+        <RequestAccessModal
+          open={requestAccessOpen}
+          onOpenChange={setRequestAccessOpen}
+        />
       </div>
     </section>
   );
