@@ -128,15 +128,13 @@ export function RequestAccessModal({
 				className="fixed inset-0 bg-black/50 backdrop-blur-sm"
 				onClick={handleClose}
 			/>
-			<div
-				className="fixed inset-0 flex max-h-[100dvh] items-start justify-center overflow-y-auto overscroll-contain px-6 py-6 touch-pan-y sm:items-center sm:px-8 sm:py-12"
-				style={{ WebkitOverflowScrolling: "touch" }}
-			>
-				<div className="w-[92%] max-w-xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)] sm:w-full">
-					<div className="rounded-[calc(1rem-8px)] bg-white">
+			<div className="fixed inset-0 flex items-start justify-center overflow-hidden px-6 py-6 sm:items-center sm:px-8 sm:py-12">
+				<div className="w-[92%] max-w-xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)] sm:w-full max-h-[calc(100dvh-3rem)]">
+					<div className="rounded-[calc(1rem-8px)] bg-white h-full">
 						<form
 							onSubmit={handleSubmit}
-							className="flex flex-col overflow-visible rounded-xl border border-transparent bg-white"
+							className="flex min-h-0 max-h-[calc(100dvh-3rem)] flex-col overflow-y-auto overscroll-contain rounded-xl border border-transparent bg-white touch-pan-y sm:max-h-[85vh]"
+							style={{ WebkitOverflowScrolling: "touch" }}
 						>
 							<div className="relative overflow-hidden rounded-t-xl bg-[#e6f0ff]">
 								<div

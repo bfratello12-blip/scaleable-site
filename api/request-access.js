@@ -2,15 +2,15 @@ const { Resend } = require("resend");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const escapeHtml = (value: string) =>
-	value
+const escapeHtml = (value) =>
+	String(value)
 		.replace(/&/g, "&amp;")
 		.replace(/</g, "&lt;")
 		.replace(/>/g, "&gt;")
 		.replace(/\"/g, "&quot;")
 		.replace(/'/g, "&#039;");
 
-module.exports = async function handler(req: any, res: any) {
+module.exports = async function handler(req, res) {
 	if (req.method === "OPTIONS") {
 		res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
 		res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -36,14 +36,14 @@ module.exports = async function handler(req: any, res: any) {
 		return res.status(400).json({ error: "Missing required fields" });
 	}
 
-	const selectedChannels: string[] = Array.isArray(channelsInput)
+	const selectedChannels = Array.isArray(channelsInput)
 		? channelsInput.filter((value) => typeof value === "string")
 		: [
 				channelsInput.googleAds ? "Google Ads" : null,
 				channelsInput.metaAds ? "Meta (Facebook / Instagram)" : null,
 				channelsInput.other ? "Other" : null,
 				channelsInput.notRunningAds ? "Not running ads yet" : null,
-		  ].filter((value): value is string => Boolean(value));
+		  ].filter(Boolean);
 
 	const channelList =
 		selectedChannels.length > 0
@@ -88,8 +88,7 @@ module.exports = async function handler(req: any, res: any) {
 
 		return res.status(200).json({ ok: true });
 	} catch (error) {
-		return res.status(500).json({ error: "Failed to send email" });
+		console.error("Resend send failed", error);
+		return res.status(500).json({ ok: false });
 	}
 };
-
-export {};
