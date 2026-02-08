@@ -1,18 +1,4 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { Resend } from "resend";
-
-type RequestPayload = {
-	email?: string;
-	storeUrl?: string;
-	averageRevenue?: string;
-	channels?: {
-		googleAds?: boolean;
-		metaAds?: boolean;
-		other?: boolean;
-		otherText?: string;
-		notRunningAds?: boolean;
-	};
-};
+const { Resend } = require("resend");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -24,9 +10,15 @@ const escapeHtml = (value: string) =>
 		.replace(/\"/g, "&quot;")
 		.replace(/'/g, "&#039;");
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+module.exports = async function handler(req, res) {
+	if (req.method === "OPTIONS") {
+		res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+		res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+		return res.status(204).end();
+	}
+
 	if (req.method !== "POST") {
-		res.setHeader("Allow", "POST");
+		res.setHeader("Allow", "POST, OPTIONS");
 		return res.status(405).json({ error: "Method not allowed" });
 	}
 
@@ -34,28 +26,34 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 		return res.status(500).json({ error: "Missing RESEND_API_KEY" });
 	}
 
-	const payload = (req.body ?? {}) as RequestPayload;
+	const payload = typeof req.body === "string" ? JSON.parse(req.body) : req.body ?? {};
 	const email = payload.email?.trim();
 	const storeUrl = payload.storeUrl?.trim();
 	const averageRevenue = payload.averageRevenue?.trim() ?? "";
-	const channels = payload.channels ?? {};
+	const channelsInput = payload.channels ?? [];
 
 	if (!email || !storeUrl) {
 		return res.status(400).json({ error: "Missing required fields" });
 	}
 
-	const selectedChannels: string[] = [];
-	if (channels.googleAds) selectedChannels.push("Google Ads");
-	if (channels.metaAds) selectedChannels.push("Meta (Facebook / Instagram)");
-	if (channels.other) selectedChannels.push("Other");
-	if (channels.notRunningAds) selectedChannels.push("Not running ads yet");
+	const selectedChannels = Array.isArray(channelsInput)
+		? channelsInput.filter((value) => typeof value === "string")
+		: [
+				channelsInput.googleAds ? "Google Ads" : null,
+				channelsInput.metaAds ? "Meta (Facebook / Instagram)" : null,
+				channelsInput.other ? "Other" : null,
+				channelsInput.notRunningAds ? "Not running ads yet" : null,
+		  ].filter(Boolean);
 
 	const channelList =
 		selectedChannels.length > 0
 			? selectedChannels.map((channel) => `<li>${escapeHtml(channel)}</li>`).join("")
 			: "<li>None selected</li>";
 
-	const otherText = channels.other ? channels.otherText?.trim() ?? "" : "";
+	const otherText =
+		!Array.isArray(channelsInput) && channelsInput.other
+			? channelsInput.otherText?.trim() ?? ""
+			: "";
 
 	const html = `
 		<div style="font-family: Arial, sans-serif; color: #0f172a;">
@@ -75,8 +73,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
 	try {
 		await resend.emails.send({
-			from: "ScaleAble <support@scaleableapp.com>",
-			to: "support@scaleableapp.com",
+			from: "ScaleAble <onboarding@resend.dev>",
+			to: process.env.REQUEST_ACCESS_TO_EMAIL || "support@scaleableapp.com",
+			replyTo: email,
 			subject: "New ScaleAble Access Request",
 			html,
 			text,
@@ -86,4 +85,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 	} catch (error) {
 		return res.status(500).json({ error: "Failed to send email" });
 	}
-}
+};
