@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 type FormState = {
@@ -44,59 +44,51 @@ export function RequestAccessModal({
 	const [submitError, setSubmitError] = useState("");
 	const [submitSuccess, setSubmitSuccess] = useState("");
 
+	// The scrollable element inside the modal (white card). On iOS Safari, we'll
+	// allow touch scrolling ONLY within this element and block background scroll.
+	const modalScrollRef = useRef<HTMLDivElement | null>(null);
+
 	const isSubmitDisabled = useMemo(
 		() => email.trim().length === 0 || storeUrl.trim().length === 0,
 		[email, storeUrl]
 	);
 
 	useEffect(() => {
-		if (!open) {
-			return;
-		}
+		if (!open) return;
 
-		const scrollY = window.scrollY || window.pageYOffset || 0;
+		// Always open at the top so header is reachable
+		requestAnimationFrame(() => {
+			modalScrollRef.current?.scrollTo({ top: 0 });
+		});
 
-		const originalStyle = {
-			position: document.body.style.position,
-			top: document.body.style.top,
-			left: document.body.style.left,
-			right: document.body.style.right,
-			width: document.body.style.width,
-			overflow: document.body.style.overflow,
+		const originalOverflow = document.body.style.overflow;
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "Escape") onOpenChange(false);
 		};
 
-		document.body.style.position = "fixed";
-		document.body.style.top = `-${scrollY}px`;
-		document.body.style.left = "0";
-		document.body.style.right = "0";
-		document.body.style.width = "100%";
 		document.body.style.overflow = "hidden";
 
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === "Escape") {
-				onOpenChange(false);
+		// iOS Safari: prevent background page from stealing scroll gestures while
+		// still allowing scrolling inside the modal card.
+		const handleTouchMove = (event: TouchEvent) => {
+			const target = event.target as Node | null;
+			const modalNode = modalScrollRef.current;
+			if (!modalNode || !target) return;
+			if (!modalNode.contains(target)) {
+				event.preventDefault();
 			}
 		};
-
+		document.addEventListener("touchmove", handleTouchMove, { passive: false });
 		document.addEventListener("keydown", handleKeyDown);
 
 		return () => {
+			document.body.style.overflow = originalOverflow;
+			document.removeEventListener("touchmove", handleTouchMove as EventListener);
 			document.removeEventListener("keydown", handleKeyDown);
-
-			document.body.style.position = originalStyle.position;
-			document.body.style.top = originalStyle.top;
-			document.body.style.left = originalStyle.left;
-			document.body.style.right = originalStyle.right;
-			document.body.style.width = originalStyle.width;
-			document.body.style.overflow = originalStyle.overflow;
-
-			window.scrollTo(0, scrollY);
 		};
 	}, [open, onOpenChange]);
 
-	if (!open) {
-		return null;
-	}
+	if (!open) return null;
 
 	const handleClose = () => {
 		setIsSubmitting(false);
@@ -105,17 +97,10 @@ export function RequestAccessModal({
 		onOpenChange(false);
 	};
 
-	const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
-		if (event.target === event.currentTarget) {
-			handleClose();
-		}
-	};
-
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		if (isSubmitDisabled || isSubmitting) {
-			return;
-		}
+		if (isSubmitDisabled || isSubmitting) return;
+
 		setIsSubmitting(true);
 		setSubmitError("");
 		setSubmitSuccess("");
@@ -136,15 +121,11 @@ export function RequestAccessModal({
 		try {
 			const response = await fetch("/api/request-access", {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
+				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(payload),
 			});
 
-			if (!response.ok) {
-				throw new Error("Request failed");
-			}
+			if (!response.ok) throw new Error("Request failed");
 
 			setSubmitSuccess("Thanks — we’ll review your store and follow up by email.");
 		} catch (error) {
@@ -156,44 +137,40 @@ export function RequestAccessModal({
 
 	return createPortal(
 		<div className="fixed inset-0 z-50">
-			{/* Backdrop (only this closes on tap) */}
+			{/* Backdrop */}
 			<div
-				className="fixed inset-0 z-0 bg-black/50 backdrop-blur-sm"
-				onClick={handleClose}
 				aria-hidden="true"
+				onClick={handleClose}
+				className="fixed inset-0 bg-black/50 backdrop-blur-sm"
 			/>
 
-			{/*
-			  iOS-safe scroll pattern:
-			  - The full-screen overlay is the ONLY scroll container.
-			  - The modal card flows naturally inside it.
-			  This avoids the iOS 'fixed + flex + overflow' scroll lock.
-			*/}
-			<div
-				className="fixed inset-0 z-10 overflow-y-scroll px-4 py-3 sm:px-8 sm:py-12"
-				style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }}
-			>
-				<div className="min-h-full flex items-start justify-center sm:items-center">
-					<div className="w-[92%] max-w-xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)] sm:w-full">
-						<div className="rounded-[calc(1rem-8px)] bg-white">
-						<form
-							onSubmit={handleSubmit}
-							className="flex flex-col overflow-visible rounded-xl border border-transparent bg-white"
+			{/* Non-scroll wrapper (avoid nested scroll on iOS) */}
+			<div className="fixed inset-0 z-10 flex items-start justify-center overflow-hidden px-4 py-6 sm:items-center sm:px-8 sm:py-12">
+				{/* Card (max height based on viewport) */}
+				<div className="w-full max-w-xl">
+					<div className="rounded-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)]">
+						{/* ✅ Single scroll container (iOS-safe) */}
+						<div
+							ref={modalScrollRef}
+							className="h-[calc(100dvh-3rem)] overflow-y-auto overscroll-contain rounded-[calc(1rem-8px)] bg-white sm:h-[85vh]"
+							style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }}
 						>
-							<div className="relative overflow-hidden rounded-t-xl bg-[#e6f0ff]">
-								<div
-									className="absolute inset-0 rounded-t-[1rem] pointer-events-none"
-									style={{
-										backgroundImage:
-											"linear-gradient(180deg, rgba(76,140,225,0.9) 0%, rgba(150,190,245,0.8) 55%, rgba(255,255,255,1) 100%)",
-									}}
-								/>
-								<div className="absolute right-0 top-3 z-20 pr-3">
+							<form onSubmit={handleSubmit} className="flex min-h-full flex-col">
+								{/* Header */}
+								<div className="sticky top-0 z-30 relative overflow-hidden bg-[#e6f0ff]">
+									<div
+										className="absolute inset-0 pointer-events-none"
+										style={{
+											backgroundImage:
+												"linear-gradient(180deg, rgba(76,140,225,0.9) 0%, rgba(150,190,245,0.8) 55%, rgba(255,255,255,1) 100%)",
+										}}
+									/>
+
 									<button
 										type="button"
 										onClick={handleClose}
 										aria-label="Close"
-										className="inline-flex h-5 w-5 items-center justify-center text-slate-400 transition hover:text-slate-700"
+										className="absolute right-3 top-3 z-20 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/70 text-slate-500 shadow-sm transition hover:bg-white hover:text-slate-800"
 									>
 										<svg
 											viewBox="0 0 24 24"
@@ -208,241 +185,220 @@ export function RequestAccessModal({
 											<path d="m6 6 12 12" />
 										</svg>
 									</button>
+
+									<div className="relative z-10 px-6 pb-5 pt-7 sm:px-8">
+										<div className="flex items-start gap-4">
+											<div className="min-w-0">
+												<h2 className="text-xl font-semibold text-white">
+													Get Access to ScaleAble
+												</h2>
+												<p className="mt-2 text-sm text-slate-700/80">
+													See true profit, not just ROAS — powered by your real Shopify data.
+												</p>
+
+												<ul className="mt-4 space-y-1 text-xs text-slate-700/80">
+													<li className="flex items-start gap-2">
+														<span className="mt-[3px] inline-block h-2 w-2 rounded-full bg-emerald-500" />
+														<span>Profit-first metrics (MER, contribution profit)</span>
+													</li>
+													<li className="flex items-start gap-2">
+														<span className="mt-[3px] inline-block h-2 w-2 rounded-full bg-emerald-500" />
+														<span>Shopify as the source of truth</span>
+													</li>
+													<li className="flex items-start gap-2">
+														<span className="mt-[3px] inline-block h-2 w-2 rounded-full bg-emerald-500" />
+														<span>Built for scaling paid media</span>
+													</li>
+												</ul>
+											</div>
+
+											<div className="ml-auto shrink-0 pr-1">
+												<img
+													src="/src/assets/9e77f0b9e3f695977cea5c5b951b71cf2270fb05.png"
+													alt="ScaleAble"
+													className="mt-1 h-9 w-auto rounded-lg object-contain"
+												/>
+											</div>
+										</div>
+
+										<div className="mt-6 border-b border-slate-200" />
+									</div>
 								</div>
-								<div className="relative z-10 px-8 pb-5 pt-8">
-									<div className="flex items-start gap-4 pr-4">
-										<div>
-											<h2 className="text-xl font-semibold text-white">
-												Get Access to ScaleAble
-											</h2>
-											<p className="mt-2 text-sm text-slate-500">
-												See true profit, not just ROAS — powered by your real Shopify data.
+
+								{/* Body */}
+								<div className="px-6 pb-28 pt-8 sm:px-8">
+									<div className="space-y-10">
+										<div className="space-y-4 rounded-2xl border border-blue-100/70 bg-blue-50/40 px-5 pb-7 pt-6 shadow-sm">
+											<p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-600">
+												Store Info
 											</p>
-											<ul className="mt-4 space-y-1 pl-2 text-xs text-slate-500">
-												<li className="flex items-start gap-2">
-													<svg
-														viewBox="0 0 20 20"
-														className="mt-0.5 h-4 w-4 fill-emerald-500 text-emerald-500"
-														fill="currentColor"
+
+											<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+												<div className="space-y-2">
+													<label
+														htmlFor="request-access-email"
+														className="text-sm font-medium text-slate-700"
 													>
-														<path
-															fill="#10B981"
-															d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.252a1 1 0 0 1-1.42.004L3.29 9.214a1 1 0 1 1 1.42-1.408l3.08 3.104 6.49-6.536a1 1 0 0 1 1.424-.003Z"
-														/>
-													</svg>
-													<span>Profit-first metrics (MER, contribution profit)</span>
-												</li>
-												<li className="flex items-start gap-2">
-													<svg
-														viewBox="0 0 20 20"
-														className="mt-0.5 h-4 w-4 fill-emerald-500 text-emerald-500"
-														fill="currentColor"
+														Email address <span className="text-rose-500">*</span>
+													</label>
+													<input
+														id="request-access-email"
+														type="email"
+														required
+														value={email}
+														onChange={(event) => setEmail(event.target.value)}
+														className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+														placeholder="you@company.com"
+													/>
+												</div>
+
+												<div className="space-y-2">
+													<label
+														htmlFor="request-access-store"
+														className="text-sm font-medium text-slate-700"
 													>
-														<path
-															fill="#10B981"
-															d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.252a1 1 0 0 1-1.42.004L3.29 9.214a1 1 0 1 1 1.42-1.408l3.08 3.104 6.49-6.536a1 1 0 0 1 1.424-.003Z"
-														/>
-													</svg>
-													<span>Shopify as the source of truth</span>
-												</li>
-												<li className="flex items-start gap-2">
-													<svg
-														viewBox="0 0 20 20"
-														className="mt-0.5 h-4 w-4 fill-emerald-500 text-emerald-500"
-														fill="currentColor"
+														Shopify store URL <span className="text-rose-500">*</span>
+													</label>
+													<input
+														id="request-access-store"
+														type="url"
+														required
+														value={storeUrl}
+														onChange={(event) => setStoreUrl(event.target.value)}
+														className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+														placeholder="https://yourstore.myshopify.com"
+													/>
+												</div>
+											</div>
+
+											<div className="space-y-2">
+												<label
+													htmlFor="request-access-revenue"
+													className="text-sm font-medium text-slate-700"
+												>
+													Average monthly revenue
+												</label>
+												<select
+													id="request-access-revenue"
+													value={averageRevenue}
+													onChange={(event) => setAverageRevenue(event.target.value)}
+													className="h-11 w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+												>
+													{revenueOptions.map((option) => (
+														<option key={option} value={option}>
+															{option}
+														</option>
+													))}
+												</select>
+											</div>
+										</div>
+
+										<div className="space-y-4">
+											<p className="text-sm font-semibold text-slate-700">
+												Advertising channels
+											</p>
+
+											<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+												<label
+													className={`flex items-start gap-3 rounded-xl border bg-white px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 ${
+														googleAds
+															? "border-blue-500 bg-blue-50/60 shadow-[0_10px_26px_-20px_rgba(37,99,235,0.45)]"
+															: "border-slate-200"
+													}`}
+												>
+													<input
+														type="checkbox"
+														checked={googleAds}
+														onChange={(event) => setGoogleAds(event.target.checked)}
+														className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40"
+													/>
+													Google Ads
+												</label>
+
+												<label
+													className={`flex items-start gap-3 rounded-xl border bg-white px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 ${
+														metaAds
+															? "border-blue-500 bg-blue-50/60 shadow-[0_10px_26px_-20px_rgba(37,99,235,0.45)]"
+															: "border-slate-200"
+													}`}
+												>
+													<input
+														type="checkbox"
+														checked={metaAds}
+														onChange={(event) => setMetaAds(event.target.checked)}
+														className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40"
+													/>
+													Meta (Facebook / Instagram)
+												</label>
+
+												<label
+													className={`flex items-start gap-3 rounded-xl border bg-white px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 ${
+														other
+															? "border-blue-500 bg-blue-50/60 shadow-[0_10px_26px_-20px_rgba(37,99,235,0.45)]"
+															: "border-slate-200"
+													}`}
+												>
+													<input
+														type="checkbox"
+														checked={other}
+														onChange={(event) => setOther(event.target.checked)}
+														className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40"
+													/>
+													Other
+												</label>
+
+												<label
+													className={`flex items-start gap-3 rounded-xl border bg-white px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 ${
+														notRunningAds
+															? "border-blue-500 bg-blue-50/60 shadow-[0_10px_26px_-20px_rgba(37,99,235,0.45)]"
+															: "border-slate-200"
+													}`}
+												>
+													<input
+														type="checkbox"
+														checked={notRunningAds}
+														onChange={(event) =>
+															setNotRunningAds(event.target.checked)
+														}
+														className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40"
+													/>
+													Not running ads yet
+												</label>
+											</div>
+
+											{other && (
+												<div className="space-y-2">
+													<label
+														htmlFor="request-access-other"
+														className="text-sm font-medium text-slate-700"
 													>
-														<path
-															fill="#10B981"
-															d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.252a1 1 0 0 1-1.42.004L3.29 9.214a1 1 0 1 1 1.42-1.408l3.08 3.104 6.49-6.536a1 1 0 0 1 1.424-.003Z"
-														/>
-													</svg>
-													<span>Built for scaling paid media</span>
-												</li>
-											</ul>
+														Other platform
+													</label>
+													<input
+														id="request-access-other"
+														type="text"
+														value={otherText}
+														onChange={(event) => setOtherText(event.target.value)}
+														className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+														placeholder="Tell us more"
+													/>
+												</div>
+											)}
 										</div>
-										<div className="ml-auto flex items-center pr-0 -mr-12">
-											<img
-												src="/src/assets/9e77f0b9e3f695977cea5c5b951b71cf2270fb05.png"
-												alt="ScaleAble"
-												className="mt-1 h-9 w-auto translate-x-6 rounded-lg object-contain"
-											/>
-										</div>
-									</div>
-									<div className="h-8" />
-									<div className="border-b border-slate-200" />
-								</div>
-							</div>
-
-							<div className="flex-1 space-y-10 px-7 pb-10 pt-10">
-								<div className="space-y-4 rounded-2xl border border-blue-100/70 bg-blue-50/40 px-5 pb-7 pt-6 shadow-sm">
-									<p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-600">
-										Store Info
-									</p>
-
-									<div className="grid grid-cols-1 gap-4 md:grid-cols-2 px-1">
-										<div className="space-y-2">
-											<label
-												htmlFor="request-access-email"
-												className="text-sm font-medium text-slate-700"
-											>
-												Email address <span className="text-rose-500">*</span>
-											</label>
-											<input
-												id="request-access-email"
-												type="email"
-												required
-												value={email}
-												onChange={(event) => setEmail(event.target.value)}
-												className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-												placeholder="you@company.com"
-											/>
-										</div>
-
-									<div className="space-y-2">
-											<label
-												htmlFor="request-access-store"
-												className="text-sm font-medium text-slate-700"
-											>
-												Shopify store URL <span className="text-rose-500">*</span>
-											</label>
-											<input
-												id="request-access-store"
-												type="url"
-												required
-												value={storeUrl}
-												onChange={(event) => setStoreUrl(event.target.value)}
-												className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-												placeholder="https://yourstore.myshopify.com"
-											/>
-										</div>
-									</div>
-
-									<div className="space-y-2 pb-6">
-										<label
-											htmlFor="request-access-revenue"
-											className="text-sm font-medium text-slate-700"
-										>
-											Average monthly revenue
-										</label>
-										<select
-											id="request-access-revenue"
-											value={averageRevenue}
-											onChange={(event) => setAverageRevenue(event.target.value)}
-											className="h-11 w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-										>
-											{revenueOptions.map((option) => (
-												<option key={option} value={option}>
-													{option}
-												</option>
-											))}
-										</select>
 									</div>
 								</div>
 
-								<div className="space-y-4 px-2 pt-4">
-									<p className="px-4 text-sm font-semibold text-slate-700">
-										Advertising channels
-									</p>
-
-									<div className="grid grid-cols-1 gap-4 md:grid-cols-2 px-4">
-										<label
-											className={`flex items-start gap-3 rounded-xl border bg-white px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 ${
-												googleAds
-													? "border-blue-500 bg-blue-50/60 shadow-[0_10px_26px_-20px_rgba(37,99,235,0.45)]"
-													: "border-slate-200"
-											}`}
-										>
-											<input
-												type="checkbox"
-												checked={googleAds}
-												onChange={(event) => setGoogleAds(event.target.checked)}
-												className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40"
-											/>
-											Google Ads
-										</label>
-
-										<label
-											className={`flex items-start gap-3 rounded-xl border bg-white px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 ${
-												metaAds
-													? "border-blue-500 bg-blue-50/60 shadow-[0_10px_26px_-20px_rgba(37,99,235,0.45)]"
-													: "border-slate-200"
-											}`}
-										>
-											<input
-												type="checkbox"
-												checked={metaAds}
-												onChange={(event) => setMetaAds(event.target.checked)}
-												className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40"
-											/>
-											Meta (Facebook / Instagram)
-										</label>
-
-										<label
-											className={`flex items-start gap-3 rounded-xl border bg-white px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 ${
-												other
-													? "border-blue-500 bg-blue-50/60 shadow-[0_10px_26px_-20px_rgba(37,99,235,0.45)]"
-													: "border-slate-200"
-											}`}
-										>
-											<input
-												type="checkbox"
-												checked={other}
-												onChange={(event) => setOther(event.target.checked)}
-												className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40"
-											/>
-											Other
-										</label>
-
-										<label
-											className={`flex items-start gap-3 rounded-xl border bg-white px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 ${
-												notRunningAds
-													? "border-blue-500 bg-blue-50/60 shadow-[0_10px_26px_-20px_rgba(37,99,235,0.45)]"
-													: "border-slate-200"
-											}`}
-										>
-											<input
-												type="checkbox"
-												checked={notRunningAds}
-												onChange={(event) => setNotRunningAds(event.target.checked)}
-												className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40"
-											/>
-											Not running ads yet
-										</label>
-									</div>
-
-									{other && (
-										<div className="space-y-2">
-											<label
-												htmlFor="request-access-other"
-												className="text-sm font-medium text-slate-700"
-											>
-												Other platform
-											</label>
-											<input
-												id="request-access-other"
-												type="text"
-												value={otherText}
-												onChange={(event) => setOtherText(event.target.value)}
-												className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
-												placeholder="Tell us more"
-											/>
-										</div>
-									)}
-								</div>
-							</div>
-
-							<div className="h-8" />
-
-							<div className="mx-3 mb-3 border-t border-blue-100/70 bg-blue-50/30 pb-10 sm:sticky sm:bottom-0">
-								<div className="pt-6">
-									<div className="flex flex-col items-start justify-between gap-4 px-4 sm:flex-row sm:items-center">
-										<p className="text-sm text-slate-500">
-											No credit card required until setup is complete.
-										</p>
-										<div className="flex w-full items-center justify-end gap-3 sm:w-auto">
-											<p className="text-xs text-slate-500 mr-auto">
+								{/* Footer (sticky) */}
+								<div className="sticky bottom-0 border-t border-blue-100/70 bg-white/95 px-6 pb-5 pt-4 backdrop-blur sm:px-8">
+									<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+										<div className="text-sm text-slate-500">
+											<div>No credit card required until setup is complete.</div>
+											<div className="text-xs text-slate-400">
 												We’ll review your store and follow up by email.
-											</p>
+											</div>
+										</div>
+
+										<div className="flex items-center justify-end gap-3">
 											<button
 												type="button"
 												onClick={handleClose}
@@ -458,19 +414,17 @@ export function RequestAccessModal({
 												{isSubmitting ? "Sending..." : "Request Access"}
 											</button>
 										</div>
-										<div className="mt-3 text-sm" aria-live="polite">
-											{submitSuccess && (
-												<p className="text-emerald-600">{submitSuccess}</p>
-											)}
-											{submitError && !submitSuccess && (
-												<p className="text-rose-600">{submitError}</p>
-											)}
-										</div>
+									</div>
+
+									<div className="mt-2 text-sm" aria-live="polite">
+										{submitSuccess && <p className="text-emerald-600">{submitSuccess}</p>}
+										{submitError && !submitSuccess && (
+											<p className="text-rose-600">{submitError}</p>
+										)}
 									</div>
 								</div>
-							</div>
-						</form>
-					</div>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
