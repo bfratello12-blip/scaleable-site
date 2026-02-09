@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 type FormState = {
@@ -43,6 +43,7 @@ export function RequestAccessModal({
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [submitError, setSubmitError] = useState("");
 	const [submitSuccess, setSubmitSuccess] = useState("");
+	const bodyScrollRef = useRef<HTMLDivElement | null>(null);
 
 	const isSubmitDisabled = useMemo(
 		() => email.trim().length === 0 || storeUrl.trim().length === 0,
@@ -52,6 +53,10 @@ export function RequestAccessModal({
 	useEffect(() => {
 		if (!open) {
 			return;
+		}
+
+		if (bodyScrollRef.current) {
+			bodyScrollRef.current.scrollTop = 0;
 		}
 
 		const originalOverflow = document.body.style.overflow;
@@ -132,14 +137,14 @@ export function RequestAccessModal({
 		<div className="fixed inset-0 z-50">
 			<div className="fixed inset-0 bg-black/50 backdrop-blur-sm pointer-events-none" />
 			<div
-				className="fixed inset-0 flex items-end justify-center overflow-hidden px-4 pb-3 pt-6 sm:items-center sm:px-8 sm:py-12"
+				className="fixed inset-0 flex items-start justify-center overflow-hidden px-4 pb-3 pt-6 sm:items-center sm:px-8 sm:py-12"
 				onClick={handleBackdropClick}
 			>
-				<div className="w-full max-w-xl rounded-t-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)] sm:w-full sm:rounded-2xl h-[100dvh] max-h-[100dvh] sm:h-auto sm:max-h-[85vh]">
+				<div className="w-full max-w-xl rounded-t-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)] sm:w-full sm:rounded-2xl h-[calc(100dvh-3rem)] sm:h-auto">
 					<div className="flex h-full flex-col rounded-[calc(1rem-8px)] bg-white">
 						<form
 							onSubmit={handleSubmit}
-							className="flex h-full flex-col rounded-xl border border-transparent bg-white"
+							className="flex h-full flex-col overflow-hidden rounded-xl border border-transparent bg-white"
 						>
 							<div className="relative overflow-hidden rounded-t-xl bg-[#e6f0ff]">
 								<div
@@ -234,7 +239,11 @@ export function RequestAccessModal({
 								</div>
 							</div>
 
-							<div className="flex-1 min-h-0 space-y-10 overflow-y-auto overscroll-contain px-7 pb-10 pt-10">
+							<div
+								ref={bodyScrollRef}
+								className="flex-1 min-h-0 space-y-10 overflow-y-auto overscroll-contain px-7 pb-10 pt-10"
+								style={{ WebkitOverflowScrolling: "touch" }}
+							>
 								<div className="space-y-4 rounded-2xl border border-blue-100/70 bg-blue-50/40 px-5 pb-7 pt-6 shadow-sm">
 									<p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-600">
 										Store Info
