@@ -1,6 +1,5 @@
 import { Check, Star, DollarSign } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { RequestAccessModal } from "./RequestAccessModal";
 import { Card } from "./ui/card";
@@ -8,7 +7,6 @@ import { motion } from "motion/react";
 
 export function Pricing() {
   const [requestAccessOpen, setRequestAccessOpen] = useState(false);
-  const navigate = useNavigate();
   const plans = [
     {
       name: "ScaleAble DIY",
@@ -160,13 +158,6 @@ export function Pricing() {
                     onClick={(event) => {
                       event.preventDefault();
                       event.stopPropagation();
-                      if (
-                        typeof window !== "undefined" &&
-                        window.matchMedia("(max-width: 639px)").matches
-                      ) {
-                        navigate("/request-access");
-                        return;
-                      }
                       setRequestAccessOpen(true);
                     }}
                   >

@@ -1,10 +1,10 @@
-import { useMemo, useState, type RefObject } from "react";
+import { useMemo, useState } from "react";
 
 export type RequestAccessFormProps = {
 	variant?: "modal" | "page";
 	onSuccess?: () => void;
 	onCancel?: () => void;
-	bodyScrollRef?: RefObject<HTMLDivElement>;
+	bodyScrollRef?: React.RefObject<HTMLDivElement>;
 };
 
 type FormState = {
