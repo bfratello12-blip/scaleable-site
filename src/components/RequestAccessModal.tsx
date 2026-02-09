@@ -1,5 +1,8 @@
+"use client";
+
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useNavigate } from "react-router-dom";
 import { RequestAccessForm } from "./RequestAccessForm";
 
 type RequestAccessModalProps = {
@@ -11,8 +14,19 @@ export function RequestAccessModal({
 	open,
 	onOpenChange,
 }: RequestAccessModalProps) {
+	const navigate = useNavigate();
+
 	useEffect(() => {
 		if (!open) {
+			return;
+		}
+		if (typeof window === "undefined") {
+			return;
+		}
+
+		if (window.matchMedia("(max-width: 639px)").matches) {
+			onOpenChange(false);
+			navigate("/request-access");
 			return;
 		}
 
@@ -28,9 +42,17 @@ export function RequestAccessModal({
 			document.body.style.overflow = originalOverflow;
 			document.removeEventListener("keydown", handleKeyDown);
 		};
-	}, [open]);
+	}, [open, onOpenChange, navigate]);
 
 	if (!open) {
+		return null;
+	}
+
+	if (
+		open &&
+		typeof window !== "undefined" &&
+		window.matchMedia("(max-width: 639px)").matches
+	) {
 		return null;
 	}
 
