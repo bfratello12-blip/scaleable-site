@@ -11,7 +11,7 @@ export function RequestAccessPage() {
 	}, []);
 
 	return (
-		<div className="min-h-screen bg-white px-4 pb-6 pt-24 sm:px-8 sm:pb-10 sm:pt-28">
+		<div className="min-h-screen bg-white px-4 pb-6 pt-32 sm:px-8 sm:pb-10 sm:pt-36">
 			<div className="mx-auto w-full max-w-2xl">
 				<div className="mb-4 flex items-center justify-between">
 					<button
