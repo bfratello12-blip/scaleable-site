@@ -28,10 +28,7 @@ const revenueOptions = [
 	"$1M+",
 ];
 
-export function RequestAccessModal({
-	open,
-	onOpenChange,
-}: RequestAccessModalProps) {
+export function RequestAccessModal({ open, onOpenChange }: RequestAccessModalProps) {
 	const [email, setEmail] = useState("");
 	const [storeUrl, setStoreUrl] = useState("");
 	const [averageRevenue, setAverageRevenue] = useState(revenueOptions[0]);
@@ -44,8 +41,8 @@ export function RequestAccessModal({
 	const [submitError, setSubmitError] = useState("");
 	const [submitSuccess, setSubmitSuccess] = useState("");
 
-	// Scroll ONLY the body section (not the whole page)
-	const bodyScrollRef = useRef<HTMLDivElement | null>(null);
+	// iOS-safe: make the CARD the single scroll container
+	const cardScrollRef = useRef<HTMLDivElement | null>(null);
 
 	const isSubmitDisabled = useMemo(
 		() => email.trim().length === 0 || storeUrl.trim().length === 0,
@@ -55,9 +52,9 @@ export function RequestAccessModal({
 	useEffect(() => {
 		if (!open) return;
 
-		// Always open at the top so header is visible
+		// Always open at the top so header is reachable
 		requestAnimationFrame(() => {
-			bodyScrollRef.current?.scrollTo({ top: 0 });
+			cardScrollRef.current?.scrollTo({ top: 0 });
 		});
 
 		const originalOverflow = document.body.style.overflow;
@@ -131,21 +128,22 @@ export function RequestAccessModal({
 				className="fixed inset-0 bg-black/50 backdrop-blur-sm"
 			/>
 
-			{/* Scrollable viewport wrapper (THIS is key for iOS) */}
-			<div
-				className="fixed inset-0 z-10 flex items-start justify-center overflow-y-auto overscroll-contain px-4 py-6 sm:items-center sm:px-8 sm:py-12"
-				style={{ WebkitOverflowScrolling: "touch" }}
-			>
-				{/* Card (max height based on viewport) */}
+			{/* Non-scroll wrapper (prevents double-scroll on iOS) */}
+			<div className="fixed inset-0 z-10 flex items-start justify-center overflow-hidden px-4 py-6 sm:items-center sm:px-8 sm:py-12">
 				<div className="w-full max-w-xl">
 					<div className="rounded-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)]">
-						<div className="max-h-[calc(100dvh-3rem)] overflow-hidden rounded-[calc(1rem-8px)] bg-white sm:max-h-[85vh]">
-							<form
-								onSubmit={handleSubmit}
-								className="flex h-full flex-col overflow-hidden"
-							>
-								{/* Header */}
-								<div className="relative overflow-hidden bg-[#e6f0ff]">
+						{/* ✅ Single scroll container */}
+						<div
+							ref={cardScrollRef}
+							className="max-h-[calc(100dvh-3rem)] overflow-y-auto overscroll-contain rounded-[calc(1rem-8px)] bg-white sm:max-h-[85vh]"
+							style={{
+								WebkitOverflowScrolling: "touch",
+								touchAction: "pan-y",
+							}}
+						>
+							<form onSubmit={handleSubmit} className="flex min-h-full flex-col">
+								{/* Header (sticky) */}
+								<div className="sticky top-0 z-30 relative overflow-hidden bg-[#e6f0ff]">
 									<div
 										className="absolute inset-0 pointer-events-none"
 										style={{
@@ -213,12 +211,8 @@ export function RequestAccessModal({
 									</div>
 								</div>
 
-								{/* Body (the only scroll area) */}
-								<div
-									ref={bodyScrollRef}
-									className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-6 pb-28 pt-8 sm:px-8"
-									style={{ WebkitOverflowScrolling: "touch" }}
-								>
+								{/* Body */}
+								<div className="px-6 pb-28 pt-8 sm:px-8">
 									<div className="space-y-10">
 										<div className="space-y-4 rounded-2xl border border-blue-100/70 bg-blue-50/40 px-5 pb-7 pt-6 shadow-sm">
 											<p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-600">
@@ -349,9 +343,7 @@ export function RequestAccessModal({
 													<input
 														type="checkbox"
 														checked={notRunningAds}
-														onChange={(event) =>
-															setNotRunningAds(event.target.checked)
-														}
+														onChange={(event) => setNotRunningAds(event.target.checked)}
 														className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40"
 													/>
 													Not running ads yet
@@ -380,7 +372,7 @@ export function RequestAccessModal({
 									</div>
 								</div>
 
-								{/* Footer (sticky) */}
+								{/* Footer (sticky inside the card scroll container) */}
 								<div className="sticky bottom-0 border-t border-blue-100/70 bg-white/95 px-6 pb-5 pt-4 backdrop-blur sm:px-8">
 									<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 										<div className="text-sm text-slate-500">
@@ -424,4 +416,3 @@ export function RequestAccessModal({
 		document.body
 	);
 }
-
