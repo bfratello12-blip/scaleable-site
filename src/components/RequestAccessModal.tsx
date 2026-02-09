@@ -132,11 +132,13 @@ export function RequestAccessModal({
 		<div className="fixed inset-0 z-50">
 			<div className="fixed inset-0 bg-black/50 backdrop-blur-sm pointer-events-none" />
 			<div
-				className="fixed inset-0 flex items-start justify-center overflow-y-auto overscroll-contain px-4 py-3 touch-pan-y sm:items-center sm:px-8 sm:py-12"
-				style={{ WebkitOverflowScrolling: "touch" }}
+				className="fixed inset-0 flex items-start justify-center overflow-hidden px-4 py-3 sm:items-center sm:px-8 sm:py-12"
 				onClick={handleBackdropClick}
 			>
-				<div className="w-[92%] max-w-xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)] sm:w-full">
+				<div
+					className="w-[92%] max-w-xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)] sm:w-full max-h-[calc(100dvh-1.5rem)] overflow-y-auto overscroll-contain touch-pan-y"
+					style={{ WebkitOverflowScrolling: "touch" }}
+				>
 					<div className="rounded-[calc(1rem-8px)] bg-white">
 						<form
 							onSubmit={handleSubmit}
