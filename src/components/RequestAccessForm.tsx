@@ -137,8 +137,8 @@ export function RequestAccessForm({
 					</button>
 				)}
 
-				<div className="relative z-10 px-6 pb-5 pt-7 sm:px-8">
-					<div className="flex items-start gap-4">
+				<div className="relative z-10 px-4 pb-5 pt-7 sm:px-8">
+					<div className="flex items-start gap-3 sm:gap-4">
 						<div className="min-w-0">
 							<h2 className="mt-4 text-xl font-semibold text-white">
 								Get Access to ScaleAble
@@ -194,7 +194,7 @@ export function RequestAccessForm({
 							<img
 								src={logo}
 								alt="ScaleAble"
-								className="mt-3 h-9 w-auto rounded-lg object-contain"
+								className="mt-3 h-7 w-auto rounded-lg object-contain sm:h-9"
 							/>
 						</div>
 					</div>
