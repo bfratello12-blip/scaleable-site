@@ -149,25 +149,52 @@ export function RequestAccessForm({
 
 							<ul className="mt-4 mb-4 space-y-1 text-xs text-slate-700/80">
 								<li className="flex items-start gap-2">
-									<span className="mt-[3px] inline-block h-2 w-2 rounded-full bg-emerald-500" />
+									<svg
+										viewBox="0 0 20 20"
+										className="mt-[1px] h-4 w-4 fill-emerald-500 text-emerald-500"
+										fill="currentColor"
+									>
+										<path
+											fill="#10B981"
+											d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.252a1 1 0 0 1-1.42.004L3.29 9.214a1 1 0 1 1 1.42-1.408l3.08 3.104 6.49-6.536a1 1 0 0 1 1.424-.003Z"
+										/>
+									</svg>
 									<span>Profit-first metrics (MER, contribution profit)</span>
 								</li>
 								<li className="flex items-start gap-2">
-									<span className="mt-[3px] inline-block h-2 w-2 rounded-full bg-emerald-500" />
+									<svg
+										viewBox="0 0 20 20"
+										className="mt-[1px] h-4 w-4 fill-emerald-500 text-emerald-500"
+										fill="currentColor"
+									>
+										<path
+											fill="#10B981"
+											d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.252a1 1 0 0 1-1.42.004L3.29 9.214a1 1 0 1 1 1.42-1.408l3.08 3.104 6.49-6.536a1 1 0 0 1 1.424-.003Z"
+										/>
+									</svg>
 									<span>Shopify as the source of truth</span>
 								</li>
 								<li className="flex items-start gap-2">
-									<span className="mt-[3px] inline-block h-2 w-2 rounded-full bg-emerald-500" />
+									<svg
+										viewBox="0 0 20 20"
+										className="mt-[1px] h-4 w-4 fill-emerald-500 text-emerald-500"
+										fill="currentColor"
+									>
+										<path
+											fill="#10B981"
+											d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.252a1 1 0 0 1-1.42.004L3.29 9.214a1 1 0 1 1 1.42-1.408l3.08 3.104 6.49-6.536a1 1 0 0 1 1.424-.003Z"
+										/>
+									</svg>
 									<span>Built for scaling paid media</span>
 								</li>
 							</ul>
 						</div>
 
-						<div className="ml-auto shrink-0 pr-1">
+						<div className="ml-auto shrink-0 pr-1 pt-4">
 							<img
 								src={logo}
 								alt="ScaleAble"
-								className="mt-1 h-9 w-auto rounded-lg object-contain"
+								className="mt-3 h-9 w-auto rounded-lg object-contain"
 							/>
 						</div>
 					</div>
