@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RequestAccessForm } from "./RequestAccessForm";
 
@@ -6,8 +6,12 @@ export function RequestAccessPage() {
 	const navigate = useNavigate();
 	const [submitted, setSubmitted] = useState(false);
 
+	useEffect(() => {
+		window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+	}, []);
+
 	return (
-		<div className="min-h-screen bg-white px-4 py-6 sm:px-8 sm:py-10">
+		<div className="min-h-screen bg-white px-4 pb-6 pt-24 sm:px-8 sm:pb-10 sm:pt-28">
 			<div className="mx-auto w-full max-w-2xl">
 				<div className="mb-4 flex items-center justify-between">
 					<button
