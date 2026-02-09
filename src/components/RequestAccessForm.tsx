@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import logo from "../assets/9e77f0b9e3f695977cea5c5b951b71cf2270fb05.png";
 
 export type RequestAccessFormProps = {
 	variant?: "modal" | "page";
@@ -164,7 +165,7 @@ export function RequestAccessForm({
 
 						<div className="ml-auto shrink-0 pr-1">
 							<img
-								src="/src/assets/9e77f0b9e3f695977cea5c5b951b71cf2270fb05.png"
+								src={logo}
 								alt="ScaleAble"
 								className="mt-1 h-9 w-auto rounded-lg object-contain"
 							/>
