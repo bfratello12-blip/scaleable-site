@@ -11,6 +11,7 @@ import { ForWho } from "./components/ForWho";
 import { CTA } from "./components/CTA";
 import { Footer } from "./components/Footer";
 import { PrivacyPolicy } from "./components/PrivacyPolicy";
+import { RequestAccessPage } from "./components/RequestAccessPage";
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
           }
         />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/request-access" element={<RequestAccessPage />} />
       </Routes>
       <Footer />
     </div>
