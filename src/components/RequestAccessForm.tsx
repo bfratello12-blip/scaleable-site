@@ -98,7 +98,7 @@ export function RequestAccessForm({
 			onSubmit={handleSubmit}
 			className={
 				isModal
-					? "flex h-full flex-col overflow-hidden"
+					? "flex min-h-0 flex-col overflow-hidden"
 					: "flex flex-col"
 			}
 		>
