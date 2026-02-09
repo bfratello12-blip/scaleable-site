@@ -44,9 +44,10 @@ export function RequestAccessModal({
 	const [submitError, setSubmitError] = useState("");
 	const [submitSuccess, setSubmitSuccess] = useState("");
 
-	// The scrollable element inside the modal (white card). On iOS Safari, we'll
-	// allow touch scrolling ONLY within this element and block background scroll.
-	const modalScrollRef = useRef<HTMLDivElement | null>(null);
+	const viewportScrollRef = useRef<HTMLDivElement | null>(null);
+
+	// Scroll ONLY the body section (not the whole page)
+	const bodyScrollRef = useRef<HTMLDivElement | null>(null);
 
 	const isSubmitDisabled = useMemo(
 		() => email.trim().length === 0 || storeUrl.trim().length === 0,
@@ -56,9 +57,9 @@ export function RequestAccessModal({
 	useEffect(() => {
 		if (!open) return;
 
-		// Always open at the top so header is reachable
+		// Always open at the top so header is visible
 		requestAnimationFrame(() => {
-			modalScrollRef.current?.scrollTo({ top: 0 });
+			bodyScrollRef.current?.scrollTo({ top: 0 });
 		});
 
 		const originalOverflow = document.body.style.overflow;
@@ -67,23 +68,10 @@ export function RequestAccessModal({
 		};
 
 		document.body.style.overflow = "hidden";
-
-		// iOS Safari: prevent background page from stealing scroll gestures while
-		// still allowing scrolling inside the modal card.
-		const handleTouchMove = (event: TouchEvent) => {
-			const target = event.target as Node | null;
-			const modalNode = modalScrollRef.current;
-			if (!modalNode || !target) return;
-			if (!modalNode.contains(target)) {
-				event.preventDefault();
-			}
-		};
-		document.addEventListener("touchmove", handleTouchMove, { passive: false });
 		document.addEventListener("keydown", handleKeyDown);
 
 		return () => {
 			document.body.style.overflow = originalOverflow;
-			document.removeEventListener("touchmove", handleTouchMove as EventListener);
 			document.removeEventListener("keydown", handleKeyDown);
 		};
 	}, [open, onOpenChange]);
@@ -138,26 +126,28 @@ export function RequestAccessModal({
 	return createPortal(
 		<div className="fixed inset-0 z-50">
 			{/* Backdrop */}
-			<div
-				aria-hidden="true"
+			<button
+				type="button"
+				aria-label="Close modal"
 				onClick={handleClose}
 				className="fixed inset-0 bg-black/50 backdrop-blur-sm"
 			/>
 
-			{/* Non-scroll wrapper (avoid nested scroll on iOS) */}
-			<div className="fixed inset-0 z-10 flex items-start justify-center overflow-hidden px-4 py-6 sm:items-center sm:px-8 sm:py-12">
+			{/* Scrollable viewport wrapper (THIS is key for iOS) */}
+			<div
+				className="fixed inset-0 z-10 flex items-start justify-center overflow-y-auto overscroll-contain px-4 py-6 sm:items-center sm:px-8 sm:py-12"
+				style={{ WebkitOverflowScrolling: "touch" }}
+			>
 				{/* Card (max height based on viewport) */}
 				<div className="w-full max-w-xl">
 					<div className="rounded-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)]">
-						{/* ✅ Single scroll container (iOS-safe) */}
-						<div
-							ref={modalScrollRef}
-							className="h-[calc(100dvh-3rem)] overflow-y-auto overscroll-contain rounded-[calc(1rem-8px)] bg-white sm:h-[85vh]"
-							style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }}
-						>
-							<form onSubmit={handleSubmit} className="flex min-h-full flex-col">
+						<div className="max-h-[calc(100dvh-3rem)] overflow-hidden rounded-[calc(1rem-8px)] bg-white sm:max-h-[85vh]">
+							<form
+								onSubmit={handleSubmit}
+								className="flex h-full flex-col overflow-hidden"
+							>
 								{/* Header */}
-								<div className="sticky top-0 z-30 relative overflow-hidden bg-[#e6f0ff]">
+								<div className="relative overflow-hidden bg-[#e6f0ff]">
 									<div
 										className="absolute inset-0 pointer-events-none"
 										style={{
@@ -225,8 +215,12 @@ export function RequestAccessModal({
 									</div>
 								</div>
 
-								{/* Body */}
-								<div className="px-6 pb-28 pt-8 sm:px-8">
+								{/* Body (the only scroll area) */}
+								<div
+									ref={bodyScrollRef}
+									className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-6 pb-28 pt-8 sm:px-8"
+									style={{ WebkitOverflowScrolling: "touch" }}
+								>
 									<div className="space-y-10">
 										<div className="space-y-4 rounded-2xl border border-blue-100/70 bg-blue-50/40 px-5 pb-7 pt-6 shadow-sm">
 											<p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-600">
@@ -247,7 +241,7 @@ export function RequestAccessModal({
 														required
 														value={email}
 														onChange={(event) => setEmail(event.target.value)}
-														className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+														className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base sm:text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
 														placeholder="you@company.com"
 													/>
 												</div>
@@ -265,7 +259,7 @@ export function RequestAccessModal({
 														required
 														value={storeUrl}
 														onChange={(event) => setStoreUrl(event.target.value)}
-														className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+														className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base sm:text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
 														placeholder="https://yourstore.myshopify.com"
 													/>
 												</div>
@@ -282,7 +276,7 @@ export function RequestAccessModal({
 													id="request-access-revenue"
 													value={averageRevenue}
 													onChange={(event) => setAverageRevenue(event.target.value)}
-													className="h-11 w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+													className="h-11 w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 text-base sm:text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
 												>
 													{revenueOptions.map((option) => (
 														<option key={option} value={option}>
@@ -379,7 +373,7 @@ export function RequestAccessModal({
 														type="text"
 														value={otherText}
 														onChange={(event) => setOtherText(event.target.value)}
-														className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+														className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base sm:text-sm text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
 														placeholder="Tell us more"
 													/>
 												</div>
@@ -432,3 +426,4 @@ export function RequestAccessModal({
 		document.body
 	);
 }
+
