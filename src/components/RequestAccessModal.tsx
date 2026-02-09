@@ -156,14 +156,26 @@ export function RequestAccessModal({
 
 	return createPortal(
 		<div className="fixed inset-0 z-50">
-			<div className="fixed inset-0 bg-black/50 backdrop-blur-sm pointer-events-none" />
+			{/* Backdrop (only this closes on tap) */}
 			<div
-				className="fixed inset-0 flex items-start justify-center overflow-y-scroll overscroll-contain px-4 py-3 touch-pan-y sm:items-center sm:px-8 sm:py-12"
-				style={{ WebkitOverflowScrolling: "touch" }}
-				onClick={handleBackdropClick}
+				className="fixed inset-0 z-0 bg-black/50 backdrop-blur-sm"
+				onClick={handleClose}
+				aria-hidden="true"
+			/>
+
+			{/*
+			  iOS-safe scroll pattern:
+			  - The full-screen overlay is the ONLY scroll container.
+			  - The modal card flows naturally inside it.
+			  This avoids the iOS 'fixed + flex + overflow' scroll lock.
+			*/}
+			<div
+				className="fixed inset-0 z-10 overflow-y-scroll px-4 py-3 sm:px-8 sm:py-12"
+				style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }}
 			>
-				<div className="w-[92%] max-w-xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)] sm:w-full">
-					<div className="rounded-[calc(1rem-8px)] bg-white">
+				<div className="min-h-full flex items-start justify-center sm:items-center">
+					<div className="w-[92%] max-w-xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)] sm:w-full">
+						<div className="rounded-[calc(1rem-8px)] bg-white">
 						<form
 							onSubmit={handleSubmit}
 							className="flex flex-col overflow-visible rounded-xl border border-transparent bg-white"
@@ -458,6 +470,7 @@ export function RequestAccessModal({
 								</div>
 							</div>
 						</form>
+					</div>
 					</div>
 				</div>
 			</div>
