@@ -139,14 +139,14 @@ export function RequestAccessForm({
 				<div className="relative z-10 px-6 pb-5 pt-7 sm:px-8">
 					<div className="flex items-start gap-4">
 						<div className="min-w-0">
-							<h2 className="text-xl font-semibold text-white">
+							<h2 className="mt-4 text-xl font-semibold text-white">
 								Get Access to ScaleAble
 							</h2>
 							<p className="mt-2 text-sm text-slate-700/80">
 								See true profit, not just ROAS — powered by your real Shopify data.
 							</p>
 
-							<ul className="mt-4 space-y-1 text-xs text-slate-700/80">
+							<ul className="mt-4 mb-4 space-y-1 text-xs text-slate-700/80">
 								<li className="flex items-start gap-2">
 									<span className="mt-[3px] inline-block h-2 w-2 rounded-full bg-emerald-500" />
 									<span>Profit-first metrics (MER, contribution profit)</span>
@@ -229,7 +229,7 @@ export function RequestAccessForm({
 							</div>
 						</div>
 
-						<div className="space-y-2">
+						<div className="space-y-2 pb-6">
 							<label
 								htmlFor="request-access-revenue"
 								className="text-sm font-medium text-slate-700"
@@ -251,7 +251,7 @@ export function RequestAccessForm({
 						</div>
 					</div>
 
-					<div className="space-y-4">
+					<div className="mt-4 space-y-4">
 						<p className="text-sm font-semibold text-slate-700">
 							Advertising channels
 						</p>
