@@ -132,17 +132,14 @@ export function RequestAccessModal({
 		<div className="fixed inset-0 z-50">
 			<div className="fixed inset-0 bg-black/50 backdrop-blur-sm pointer-events-none" />
 			<div
-				className="fixed inset-0 flex items-start justify-center overflow-hidden px-4 py-3 sm:items-center sm:px-8 sm:py-12"
+				className="fixed inset-0 flex items-end justify-center overflow-hidden px-4 pb-3 pt-6 sm:items-center sm:px-8 sm:py-12"
 				onClick={handleBackdropClick}
 			>
-				<div
-					className="w-[92%] max-w-xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)] sm:w-full max-h-[calc(100dvh-1.5rem)] overflow-y-auto overscroll-contain touch-pan-y"
-					style={{ WebkitOverflowScrolling: "touch" }}
-				>
-					<div className="rounded-[calc(1rem-8px)] bg-white">
+				<div className="w-full max-w-xl rounded-t-2xl bg-gradient-to-br from-[#0b1b3a] via-[#123a7a] to-[#1e57a6] p-[8px] shadow-[0_30px_90px_-40px_rgba(15,23,42,0.45)] sm:w-full sm:rounded-2xl h-[100dvh] max-h-[100dvh] sm:h-auto sm:max-h-[85vh]">
+					<div className="flex h-full flex-col rounded-[calc(1rem-8px)] bg-white">
 						<form
 							onSubmit={handleSubmit}
-							className="flex flex-col overflow-visible rounded-xl border border-transparent bg-white"
+							className="flex h-full flex-col rounded-xl border border-transparent bg-white"
 						>
 							<div className="relative overflow-hidden rounded-t-xl bg-[#e6f0ff]">
 								<div
@@ -237,7 +234,7 @@ export function RequestAccessModal({
 								</div>
 							</div>
 
-							<div className="flex-1 space-y-10 px-7 pb-10 pt-10">
+							<div className="flex-1 min-h-0 space-y-10 overflow-y-auto overscroll-contain px-7 pb-10 pt-10">
 								<div className="space-y-4 rounded-2xl border border-blue-100/70 bg-blue-50/40 px-5 pb-7 pt-6 shadow-sm">
 									<p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-600">
 										Store Info
@@ -397,7 +394,7 @@ export function RequestAccessModal({
 
 							<div className="h-8" />
 
-							<div className="mx-3 mb-3 border-t border-blue-100/70 bg-blue-50/30 pb-10 sm:sticky sm:bottom-0">
+							<div className="mx-3 mb-3 border-t border-blue-100/70 bg-blue-50/30 pb-10">
 								<div className="pt-6">
 									<div className="flex flex-col items-start justify-between gap-4 px-4 sm:flex-row sm:items-center">
 										<p className="text-sm text-slate-500">
