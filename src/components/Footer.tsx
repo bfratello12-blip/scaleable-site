@@ -19,7 +19,7 @@ export function Footer() {
       { label: "Documentation", href: "#" },
       { label: "Help Center", href: "#" },
       { label: "Privacy Policy", href: "/privacy-policy" },
-      { label: "Terms of Service", href: "#" }
+      { label: "Terms of Service", href: "/terms" }
     ]
   };
 
@@ -72,7 +72,7 @@ export function Footer() {
             <a href="/privacy-policy" className="text-muted-foreground hover:text-primary transition-colors font-medium">
               Privacy
             </a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors font-medium">
+            <a href="/terms" className="text-muted-foreground hover:text-primary transition-colors font-medium">
               Terms
             </a>
             <a href="#" className="text-muted-foreground hover:text-primary transition-colors font-medium">

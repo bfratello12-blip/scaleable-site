@@ -7,11 +7,11 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { href: "#solution", label: "Solution" },
-    { href: "#how-it-works", label: "How It Works" },
-    { href: "#pricing", label: "Pricing" },
-    { href: "#for-who", label: "For Who" },
-    { href: "#faq", label: "FAQ" }
+    { href: "/#solution", label: "Solution" },
+    { href: "/#how-it-works", label: "How It Works" },
+    { href: "/#pricing", label: "Pricing" },
+    { href: "/#for-who", label: "For Who" },
+    { href: "/#faq", label: "FAQ" }
   ];
 
   return (
@@ -19,7 +19,7 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="flex items-center transition-opacity hover:opacity-80">
+          <a href="/" className="flex items-center transition-opacity hover:opacity-80">
             <img src={logo} alt="ScaleAble" className="h-9" />
           </a>
 
@@ -40,7 +40,7 @@ export function Header() {
           <div className="hidden lg:flex items-center gap-3">
             <Button variant="ghost" className="font-semibold">Sign In</Button>
             <Button asChild className="font-semibold shadow-sm bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity">
-              <a href="#pricing">Get Started</a>
+              <a href="/#pricing">Get Started</a>
             </Button>
           </div>
 
@@ -74,7 +74,7 @@ export function Header() {
               <div className="flex flex-col gap-2 pt-4 border-t border-border mt-2">
                 <Button variant="ghost" className="w-full font-semibold">Sign In</Button>
                 <Button asChild className="w-full font-semibold bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity">
-                  <a href="#pricing" onClick={() => setMobileMenuOpen(false)}>
+                  <a href="/#pricing" onClick={() => setMobileMenuOpen(false)}>
                     Get Started
                   </a>
                 </Button>

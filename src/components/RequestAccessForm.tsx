@@ -151,7 +151,7 @@ export function RequestAccessForm({
 								<li className="flex items-start gap-2">
 									<svg
 										viewBox="0 0 20 20"
-										className="mt-[1px] h-4 w-4 fill-emerald-500 text-emerald-500"
+										className="mt-[1px] h-4 w-4 shrink-0 fill-emerald-500 text-emerald-500"
 										fill="currentColor"
 									>
 										<path
@@ -164,7 +164,7 @@ export function RequestAccessForm({
 								<li className="flex items-start gap-2">
 									<svg
 										viewBox="0 0 20 20"
-										className="mt-[1px] h-4 w-4 fill-emerald-500 text-emerald-500"
+										className="mt-[1px] h-4 w-4 shrink-0 fill-emerald-500 text-emerald-500"
 										fill="currentColor"
 									>
 										<path
@@ -177,7 +177,7 @@ export function RequestAccessForm({
 								<li className="flex items-start gap-2">
 									<svg
 										viewBox="0 0 20 20"
-										className="mt-[1px] h-4 w-4 fill-emerald-500 text-emerald-500"
+										className="mt-[1px] h-4 w-4 shrink-0 fill-emerald-500 text-emerald-500"
 										fill="currentColor"
 									>
 										<path
