@@ -15,6 +15,7 @@ import { TermsOfService } from "./components/TermsOfService";
 import { RequestAccessPage } from "./components/RequestAccessPage";
 import { DemoModalProvider } from "./components/DemoModalProvider";
 import { BookingRedirect } from "./components/BookingRedirect";
+import { ContactPage } from "./components/ContactPage";
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/request-access" element={<RequestAccessPage />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route
             path="/go/book-strategy"
             element={<BookingRedirect offer="strategy" />}
