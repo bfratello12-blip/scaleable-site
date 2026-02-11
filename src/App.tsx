@@ -22,11 +22,14 @@ import { GettingStartedPage } from "./components/GettingStartedPage";
 import { MetricsDefinitionsPage } from "./components/MetricsDefinitionsPage";
 import { DocumentationPage } from "./components/DocumentationPage";
 import { CookiesPolicyPage } from "./components/CookiesPolicyPage";
+import { SeoManager } from "./components/SeoManager";
+import { NotFoundPage } from "./components/NotFoundPage";
 
 export default function App() {
   return (
     <DemoModalProvider>
       <div className="w-full min-h-screen bg-background text-foreground antialiased">
+        <SeoManager />
         <Header />
         <Routes>
           <Route
@@ -70,6 +73,7 @@ export default function App() {
             path="/go/book-demo"
             element={<BookingRedirect offer="demo" />}
           />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <Footer />
       </div>
