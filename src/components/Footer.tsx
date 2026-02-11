@@ -10,14 +10,14 @@ export function Footer() {
       { label: "FAQ", href: "#faq" }
     ],
     Company: [
-      { label: "About", href: "#" },
+      { label: "About", href: "/about" },
       { label: "Blog", href: "#" },
       { label: "Careers", href: "#" },
       { label: "Contact", href: "/contact" }
     ],
     Resources: [
-      { label: "Documentation", href: "#" },
-      { label: "Help Center", href: "#" },
+      { label: "Documentation", href: "/documentation" },
+      { label: "Help Center", href: "/help-center" },
       { label: "Privacy Policy", href: "/privacy-policy" },
       { label: "Terms of Service", href: "/terms" }
     ]
@@ -37,7 +37,12 @@ export function Footer() {
               <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/15 transition-colors">
                 <Mail className="h-5 w-5 text-primary" />
               </div>
-              <a href="mailto:support@scaleableapp.com" className="hover:text-foreground transition-colors font-medium">
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=support@scaleableapp.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-foreground transition-colors font-medium"
+              >
                 support@scaleableapp.com
               </a>
             </div>
@@ -75,7 +80,7 @@ export function Footer() {
             <a href="/terms" className="text-muted-foreground hover:text-primary transition-colors font-medium">
               Terms
             </a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors font-medium">
+            <a href="/cookies" className="text-muted-foreground hover:text-primary transition-colors font-medium">
               Cookies
             </a>
           </div>

@@ -16,6 +16,12 @@ import { RequestAccessPage } from "./components/RequestAccessPage";
 import { DemoModalProvider } from "./components/DemoModalProvider";
 import { BookingRedirect } from "./components/BookingRedirect";
 import { ContactPage } from "./components/ContactPage";
+import { AboutPage } from "./components/AboutPage";
+import { HelpCenterPage } from "./components/HelpCenterPage";
+import { GettingStartedPage } from "./components/GettingStartedPage";
+import { MetricsDefinitionsPage } from "./components/MetricsDefinitionsPage";
+import { DocumentationPage } from "./components/DocumentationPage";
+import { CookiesPolicyPage } from "./components/CookiesPolicyPage";
 
 export default function App() {
   return (
@@ -43,6 +49,15 @@ export default function App() {
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/request-access" element={<RequestAccessPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/help-center" element={<HelpCenterPage />} />
+          <Route path="/help-center/getting-started" element={<GettingStartedPage />} />
+          <Route
+            path="/help-center/metrics-definitions"
+            element={<MetricsDefinitionsPage />}
+          />
+          <Route path="/documentation" element={<DocumentationPage />} />
+          <Route path="/cookies" element={<CookiesPolicyPage />} />
           <Route
             path="/go/book-strategy"
             element={<BookingRedirect offer="strategy" />}

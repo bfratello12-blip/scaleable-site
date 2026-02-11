@@ -5,6 +5,7 @@ import { Card } from "./ui/card";
 import { cn } from "./ui/utils";
 
 const supportEmail = "support@scaleableapp.com";
+const supportEmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${supportEmail}`;
 
 export function ContactPage() {
   useEffect(() => {
@@ -46,21 +47,17 @@ export function ContactPage() {
                 </p>
                 <div className="mt-4 flex flex-wrap items-center gap-3">
                   <a
-                    href={`mailto:${supportEmail}`}
-                    onClick={(event) => {
-                      event.preventDefault();
-                      window.location.href = `mailto:${supportEmail}`;
-                    }}
+                    href={supportEmailLink}
+                    target="_blank"
+                    rel="noreferrer"
                     className={cn(buttonVariants({}), "font-semibold")}
                   >
                     Email us
                   </a>
                   <a
-                    href={`mailto:${supportEmail}`}
-                    onClick={(event) => {
-                      event.preventDefault();
-                      window.location.href = `mailto:${supportEmail}`;
-                    }}
+                    href={supportEmailLink}
+                    target="_blank"
+                    rel="noreferrer"
                     className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
                   >
                     {supportEmail}
