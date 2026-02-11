@@ -45,36 +45,36 @@ export function Features() {
             >
               <h3 className="text-3xl md:text-4xl mb-5 font-bold text-foreground leading-tight">
                 <span className={gradientText}>
-                  True Attribution
+                  Ad Attribution Over Time
                 </span>
-                : Profit vs ROAS
+                : Ad ROAS vs. True ROAS
               </h3>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Compare business truth (Profit Return on Costs)
-                vs tracked ad return (ROAS) under forward
-                windows. Understand the real impact of your ad
-                spend on profitability.
+                Compare business truth (MER (True ROAS))
+                vs. tracked ad return (ROAS) under forward
+                windows. Understand how long it takes for
+                ad spend to reach its full revenue impact.
               </p>
               <ul className="space-y-4">
                 <li className="flex items-start gap-4">
                   <div className="w-2 h-2 rounded-full bg-primary mt-2.5 flex-shrink-0" />
                   <span className="text-muted-foreground leading-relaxed">
-                    Daily windowed lines show profit vs ROAS
-                    over time
+                    Daily windowed lines show True ROAS vs Ad ROAS
+                    over time.
                   </span>
                 </li>
                 <li className="flex items-start gap-4">
                   <div className="w-2 h-2 rounded-full bg-primary mt-2.5 flex-shrink-0" />
                   <span className="text-muted-foreground leading-relaxed">
-                    Scatter plot reveals correlation patterns
-                    between metrics
+                    See how ad spend is actually driving
+                    revenue through other channels over time.
                   </span>
                 </li>
                 <li className="flex items-start gap-4">
                   <div className="w-2 h-2 rounded-full bg-primary mt-2.5 flex-shrink-0" />
                   <span className="text-muted-foreground leading-relaxed">
-                    Spot when ROAS looks great but profit
-                    deteriorates
+                    Spot when Ad ROAS looks great but True ROAS
+                    deteriorates.
                   </span>
                 </li>
               </ul>
