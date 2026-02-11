@@ -2,8 +2,10 @@ import { Button } from "./ui/button";
 import { ArrowRight, TrendingUp, Play } from "lucide-react";
 import dashboardImage from "../assets/ScaleAble Dashboard KPI Cards_Profit.png";
 import { motion } from "motion/react";
+import { useDemoModal } from "./DemoModalProvider";
 
 export function Hero() {
+  const { openDemo } = useDemoModal();
   return (
     <section className="relative pt-40 pb-24 px-6 overflow-hidden bg-gradient-to-b from-white via-secondary/20 to-background">
       {/* Grid Background */}
@@ -103,6 +105,8 @@ export function Hero() {
               size="lg"
               variant="outline"
               className="w-full sm:w-auto text-base font-semibold px-8 border-2 hover:bg-muted/50"
+              type="button"
+              onClick={() => openDemo()}
             >
               <Play className="mr-2 h-5 w-5" />
               Watch Demo

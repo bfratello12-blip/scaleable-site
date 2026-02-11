@@ -13,33 +13,36 @@ import { Footer } from "./components/Footer";
 import { PrivacyPolicy } from "./components/PrivacyPolicy";
 import { TermsOfService } from "./components/TermsOfService";
 import { RequestAccessPage } from "./components/RequestAccessPage";
+import { DemoModalProvider } from "./components/DemoModalProvider";
 
 export default function App() {
   return (
-    <div className="w-full min-h-screen bg-background text-foreground antialiased">
-      <Header />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <main className="w-full">
-              <Hero />
-              <Problem />
-              <Solution />
-              <Features />
-              <HowItWorks />
-              <Pricing />
-              <Questions />
-              <ForWho />
-              <CTA />
-            </main>
-          }
-        />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/terms" element={<TermsOfService />} />
-        <Route path="/request-access" element={<RequestAccessPage />} />
-      </Routes>
-      <Footer />
-    </div>
+    <DemoModalProvider>
+      <div className="w-full min-h-screen bg-background text-foreground antialiased">
+        <Header />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <main className="w-full">
+                <Hero />
+                <Problem />
+                <Solution />
+                <Features />
+                <HowItWorks />
+                <Pricing />
+                <Questions />
+                <ForWho />
+                <CTA />
+              </main>
+            }
+          />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/request-access" element={<RequestAccessPage />} />
+        </Routes>
+        <Footer />
+      </div>
+    </DemoModalProvider>
   );
 }

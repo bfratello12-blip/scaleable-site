@@ -37,8 +37,8 @@ export function Footer() {
               <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/15 transition-colors">
                 <Mail className="h-5 w-5 text-primary" />
               </div>
-              <a href="mailto:hello@scaleable.com" className="hover:text-foreground transition-colors font-medium">
-                hello@scaleable.com
+              <a href="mailto:support@scaleableapp.com" className="hover:text-foreground transition-colors font-medium">
+                support@scaleableapp.com
               </a>
             </div>
           </div>

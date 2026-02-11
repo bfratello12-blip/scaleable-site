@@ -7,10 +7,12 @@ import { Button } from "./ui/button";
 import { RequestAccessModal } from "./RequestAccessModal";
 import { Card } from "./ui/card";
 import { motion } from "motion/react";
+import { useDemoModal } from "./DemoModalProvider";
 
 export function Pricing() {
   const [requestAccessOpen, setRequestAccessOpen] = useState(false);
   const navigate = useNavigate();
+  const { openDemo } = useDemoModal();
   const plans = [
     {
       name: "ScaleAble DIY",
@@ -177,8 +179,25 @@ export function Pricing() {
                 )}
 
                 {/* Secondary CTA */}
+                {plan.name === "ScaleAble Managed" && (
+                  <button
+                    type="button"
+                    onClick={() => openDemo()}
+                    className="w-full mb-8 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                  >
+                    Watch Demo
+                  </button>
+                )}
                 {plan.name !== "ScaleAble Managed" && (
-                  <button className="w-full mb-8 text-sm font-medium text-primary hover:text-primary/80 transition-colors">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (plan.secondaryCta === "Watch Demo") {
+                        openDemo();
+                      }
+                    }}
+                    className="w-full mb-8 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                  >
                     {plan.secondaryCta}
                   </button>
                 )}
@@ -242,11 +261,10 @@ export function Pricing() {
           className="mt-16 text-center"
         >
           <p className="text-lg text-muted-foreground">
-            All plans include a{" "}
             <span className="font-semibold text-foreground">
-              14-day free trial
+              No credit card or payment required
             </span>
-            . No credit card required.
+            {" "}until app install is complete.
           </p>
         </motion.div>
 
