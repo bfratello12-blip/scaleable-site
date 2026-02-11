@@ -52,9 +52,16 @@ export function CTA() {
               transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" }}
               className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
             >
-              <Button size="lg" variant="secondary" className="w-full sm:w-auto text-base font-bold px-8 shadow-xl hover:shadow-2xl transition-all">
-                Book a Demo
-                <ArrowRight className="ml-2 h-5 w-5" />
+              <Button
+                size="lg"
+                variant="secondary"
+                asChild
+                className="w-full sm:w-auto text-base font-bold px-8 shadow-xl hover:shadow-2xl transition-all"
+              >
+                <a href="/go/book-demo">
+                  Book a Demo
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </a>
               </Button>
               <Button size="lg" variant="ghost" asChild className="w-full sm:w-auto text-base font-bold px-8 text-white hover:bg-white/10 border border-white/30">
                 <a href="#pricing">Get Started</a>

@@ -152,9 +152,10 @@ export function Pricing() {
                 {plan.name === "ScaleAble Managed" ? (
                   <Button
                     size="lg"
+                    asChild
                     className="w-full mb-3 font-semibold text-base bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity"
                   >
-                    Book a Call
+                    <a href="/go/book-managed">Book a Call</a>
                   </Button>
                 ) : (
                   <Button
@@ -188,19 +189,27 @@ export function Pricing() {
                     Watch Demo
                   </button>
                 )}
-                {plan.name !== "ScaleAble Managed" && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (plan.secondaryCta === "Watch Demo") {
-                        openDemo();
-                      }
-                    }}
-                    className="w-full mb-8 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-                  >
-                    {plan.secondaryCta}
-                  </button>
-                )}
+                {plan.name !== "ScaleAble Managed" &&
+                  (plan.secondaryCta === "Book a Call" ? (
+                    <a
+                      href="/go/book-strategy"
+                      className="mb-8 text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center justify-center"
+                    >
+                      Book a Call
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (plan.secondaryCta === "Watch Demo") {
+                          openDemo();
+                        }
+                      }}
+                      className="w-full mb-8 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                    >
+                      {plan.secondaryCta}
+                    </button>
+                  ))}
 
                 {/* Features */}
                 <div className="space-y-4 flex-grow">
