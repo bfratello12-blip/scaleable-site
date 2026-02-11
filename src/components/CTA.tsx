@@ -22,7 +22,7 @@ export function CTA() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 mb-8"
             >
               <Sparkles className="h-4 w-4 text-white" />
-              <span className="text-sm font-semibold text-white">Start Free Today</span>
+              <span className="text-sm font-semibold text-white">Get Started Today</span>
             </motion.div>
             
             <motion.h2
@@ -68,7 +68,7 @@ export function CTA() {
               transition={{ duration: 0.4, delay: 0.6, ease: "easeOut" }}
               className="text-white/80 font-medium"
             >
-              No credit card required • 14-day free trial • Cancel anytime
+              No credit card or payment required until after install • Cancel anytime
             </motion.p>
           </div>
 
