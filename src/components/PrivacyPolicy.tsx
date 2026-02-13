@@ -182,6 +182,9 @@ export function PrivacyPolicy() {
               Company: ScaleAble
             </p>
           </div>
+          <p className="pt-6 text-sm text-slate-600">
+            ScaleAble is owned and operated by Brian M Fratello.
+          </p>
         </div>
       </div>
     </section>
