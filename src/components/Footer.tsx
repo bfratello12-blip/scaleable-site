@@ -17,6 +17,7 @@ export function Footer() {
     ],
     Resources: [
       { label: "Documentation", href: "/documentation" },
+      { label: "Data Deletion", href: "/data-deletion" },
       { label: "Help Center", href: "/help-center" },
       { label: "Privacy Policy", href: "/privacy-policy" },
       { label: "Terms of Service", href: "/terms" }

@@ -24,6 +24,7 @@ import { DocumentationPage } from "./components/DocumentationPage";
 import { CookiesPolicyPage } from "./components/CookiesPolicyPage";
 import { SeoManager } from "./components/SeoManager";
 import { NotFoundPage } from "./components/NotFoundPage";
+import { DataDeletionPage } from "./components/DataDeletionPage";
 
 export default function App() {
   return (
@@ -60,6 +61,7 @@ export default function App() {
             element={<MetricsDefinitionsPage />}
           />
           <Route path="/documentation" element={<DocumentationPage />} />
+          <Route path="/data-deletion" element={<DataDeletionPage />} />
           <Route path="/cookies" element={<CookiesPolicyPage />} />
           <Route
             path="/go/book-strategy"
