@@ -9,8 +9,8 @@ export function Questions() {
       answer: "See real-time profit margins as you scale ad budgets"
     },
     {
-      question: "Which products and channels scale cleanly?",
-      answer: "Identify which offerings maintain margin under increased spend"
+      question: "Can we continue to scale profitably?",
+      answer: "Understand which ad channels push profitability, or diminish returns."
     },
     {
       question: "When does margin start to break?",
