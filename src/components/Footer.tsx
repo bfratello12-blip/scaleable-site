@@ -71,9 +71,10 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-muted-foreground">
-            © {new Date().getFullYear()} ScaleAble. All rights reserved.
-          </p>
+          <div className="text-muted-foreground text-center md:text-left">
+            <p>© {new Date().getFullYear()} ScaleAble. All rights reserved.</p>
+            <p>ScaleAble is operated by Brian M Fratello</p>
+          </div>
           <div className="flex gap-8">
             <a href="/privacy-policy" className="text-muted-foreground hover:text-primary transition-colors font-medium">
               Privacy
