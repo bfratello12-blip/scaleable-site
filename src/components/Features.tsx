@@ -1,6 +1,7 @@
 import attributionImage from "../assets/Ad Attribution Trend Chart_Profit.png";
 import performanceImage from "../assets/Event Performance Comparison_Profit.png";
 import monthlyImage from "../assets/Monthly Performance Table_Profit.png";
+import productPerformanceImage from "../assets/productperformancescaleable.png";
 import { BarChart3 } from "lucide-react";
 import { motion } from "motion/react";
 
@@ -232,6 +233,75 @@ export function Features() {
                   className="w-full h-auto"
                 />
               </div>
+            </motion.div>
+          </div>
+
+          {/* Product Performance */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{
+                duration: 0.5,
+                delay: 0.2,
+                ease: "easeOut",
+              }}
+              className="order-2 lg:order-1 relative"
+            >
+              <div className="absolute -inset-4 bg-gradient-to-bl from-primary/10 to-primary/5 rounded-3xl blur-2xl" />
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-border bg-white">
+                <img
+                  src={productPerformanceImage}
+                  alt="Product Performance"
+                  className="w-full h-auto"
+                />
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="order-1 lg:order-2"
+            >
+              <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-5">
+                Product Performance
+              </div>
+              <h3 className="text-3xl md:text-4xl mb-5 font-bold text-foreground leading-tight">
+                See Which Products Actually Drive {" "}
+                <span className={gradientText}>Profit</span>
+              </h3>
+              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                Go beyond store-level reporting and understand performance at the
+                product level. Product Performance helps you quickly identify which
+                items are driving revenue, profit, margin, and sales velocity so
+                you can make better merchandising and marketing decisions.
+              </p>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-4">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2.5 flex-shrink-0" />
+                  <span className="text-muted-foreground leading-relaxed">
+                    View product-level revenue, profit, margin, and profit per
+                    unit
+                  </span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2.5 flex-shrink-0" />
+                  <span className="text-muted-foreground leading-relaxed">
+                    Spot rising products, declining products, and low-inventory
+                    risks
+                  </span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2.5 flex-shrink-0" />
+                  <span className="text-muted-foreground leading-relaxed">
+                    Identify true profit drivers and quickly find products that
+                    need attention
+                  </span>
+                </li>
+              </ul>
             </motion.div>
           </div>
         </div>
