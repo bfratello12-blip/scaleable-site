@@ -4,6 +4,7 @@ import monthlyImage from "../assets/Monthly Performance Table_Profit.png";
 import productPerformanceImage from "../assets/productperformancescaleable.png";
 import { BarChart3 } from "lucide-react";
 import { motion } from "motion/react";
+import { FeatureLabel } from "./FeatureLabel";
 
 const gradientText =
   "bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] bg-clip-text text-transparent";
@@ -44,6 +45,7 @@ export function Features() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
+              <FeatureLabel>Ad Attribution</FeatureLabel>
               <h3 className="text-3xl md:text-4xl mb-5 font-bold text-foreground leading-tight">
                 <span className={gradientText}>
                   Ad Attribution Over Time
@@ -133,6 +135,7 @@ export function Features() {
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="order-1 lg:order-2"
             >
+              <FeatureLabel>Event Tracking</FeatureLabel>
               <h3 className="text-3xl md:text-4xl mb-5 font-bold text-foreground leading-tight">
                 <span className={gradientText}>
                   Track Changes
@@ -178,6 +181,7 @@ export function Features() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
+              <FeatureLabel>Performance History</FeatureLabel>
               <h3 className="text-3xl md:text-4xl mb-5 font-bold text-foreground leading-tight">
                 Complete{" "}
                 <span className={gradientText}>
@@ -266,9 +270,7 @@ export function Features() {
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="order-1 lg:order-2"
             >
-              <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-5">
-                Product Performance
-              </div>
+              <FeatureLabel>Product Performance</FeatureLabel>
               <h3 className="text-3xl md:text-4xl mb-5 font-bold text-foreground leading-tight">
                 See Which Products Actually Drive {" "}
                 <span className={gradientText}>Profit</span>
