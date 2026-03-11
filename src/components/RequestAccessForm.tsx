@@ -247,12 +247,12 @@ export function RequestAccessForm({
 								</label>
 								<input
 									id="request-access-store"
-									type="url"
+									type="text"
 									required
 									value={storeUrl}
 									onChange={(event) => setStoreUrl(event.target.value)}
 									className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 sm:text-sm"
-									placeholder="https://yourstore.myshopify.com"
+									placeholder="yourstore.myshopify.com"
 								/>
 							</div>
 						</div>
