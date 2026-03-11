@@ -409,7 +409,17 @@ export function RequestAccessForm({
 				</div>
 
 				<div className="mt-2 text-sm" aria-live="polite">
-					{submitSuccess && <p className="text-emerald-600">{submitSuccess}</p>}
+					{submitSuccess && (
+						<div
+							role="status"
+							className="rounded-lg border border-emerald-300 bg-emerald-50 px-4 py-3 shadow-sm"
+						>
+							<p className="text-sm font-semibold text-emerald-800">
+								Request received ✅
+							</p>
+							<p className="mt-1 text-sm text-emerald-700">{submitSuccess}</p>
+						</div>
+					)}
 					{submitError && !submitSuccess && (
 						<p className="text-rose-600">{submitError}</p>
 					)}
