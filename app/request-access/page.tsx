@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { RequestAccessForm } from "../../src/components/RequestAccessForm";
 
 export default function RequestAccessPage() {
-	const router = useRouter();
+	const navigate = useNavigate();
 	const [submitted, setSubmitted] = useState(false);
 
 	return (
@@ -14,14 +14,14 @@ export default function RequestAccessPage() {
 				<div className="mb-4 flex items-center justify-between">
 					<button
 						type="button"
-						onClick={() => router.back()}
+						onClick={() => navigate(-1)}
 						className="text-sm font-medium text-slate-600 hover:text-slate-900"
 					>
 						← Back
 					</button>
 					<button
 						type="button"
-						onClick={() => router.push("/")}
+						onClick={() => navigate("/")}
 						className="text-sm font-medium text-blue-600 hover:text-blue-700"
 					>
 						Home
@@ -38,7 +38,7 @@ export default function RequestAccessPage() {
 							<div className="px-6 pb-8 sm:px-8">
 								<button
 									type="button"
-									onClick={() => router.push("/")}
+									onClick={() => navigate("/")}
 									className="mt-4 inline-flex items-center rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-100"
 								>
 									Back to home
