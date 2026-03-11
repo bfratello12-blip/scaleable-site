@@ -412,7 +412,7 @@ export function RequestAccessForm({
 					{submitSuccess && (
 						<div
 							role="status"
-							className="rounded-lg border border-emerald-300 bg-emerald-50 px-4 py-3 shadow-sm"
+							className="mb-3 rounded-lg border border-emerald-300 bg-emerald-50 px-4 py-3 shadow-sm"
 						>
 							<p className="text-sm font-semibold text-emerald-800">
 								Request received ✅
