@@ -1,5 +1,5 @@
 import { ShoppingCart, DollarSign, TrendingUp, Tag, Zap } from "lucide-react";
-import costsImage from "../assets/Cost Settings_Profit.png";
+import costsImage from "../assets/costsettings_scaleable.png";
 import { motion } from "motion/react";
 
 export function HowItWorks() {

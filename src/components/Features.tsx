@@ -1,7 +1,7 @@
 import attributionImage from "../assets/Ad Attribution Trend Chart_Profit.png";
 import performanceImage from "../assets/Event Performance Comparison_Profit.png";
 import monthlyImage from "../assets/Monthly Performance Table_Profit.png";
-import productPerformanceImage from "../assets/productperformancescaleable.png";
+import productPerformanceImage from "../assets/product_performance_scaleable.png";
 import { BarChart3 } from "lucide-react";
 import { motion } from "motion/react";
 import { FeatureLabel } from "./FeatureLabel";

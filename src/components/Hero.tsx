@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { ArrowRight, TrendingUp, Play } from "lucide-react";
-import dashboardImage from "../assets/ScaleAble Dashboard KPI Cards_Profit.png";
+import dashboardImage from "../assets/scaleable_dashboard_hero_updated.png";
 import { motion } from "motion/react";
 import { useDemoModal } from "./DemoModalProvider";
 
