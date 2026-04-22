@@ -1,137 +1,196 @@
-import { Button } from "./ui/button";
-import { ArrowRight, TrendingUp, Play } from "lucide-react";
-import dashboardImage from "../assets/scaleable_dashboard_hero_updated.png";
 import { motion } from "motion/react";
+import { ArrowRight, Play, TrendingUp, Sparkles } from "lucide-react";
+import dashboardImage from "../assets/scaleable_dashboard_hero_updated.png";
 import { useDemoModal } from "./DemoModalProvider";
 
 export function Hero() {
   const { openDemo } = useDemoModal();
+
   return (
-    <section className="relative pt-40 pb-24 px-6 overflow-hidden bg-gradient-to-b from-white via-secondary/20 to-background">
-      {/* Grid Background */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute inset-0 opacity-[0.50]"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, rgba(43, 114, 215, 0.18) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(43, 114, 215, 0.18) 1px, transparent 1px)
-            `,
-            backgroundSize: "64px 64px",
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-background" />
-      </div>
+    <section
+      className="relative overflow-hidden"
+      style={{ paddingTop: 140, paddingBottom: 80, background: "#FFFFFF" }}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 sa-grid-bg pointer-events-none" />
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: -200,
+          right: -200,
+          width: 700,
+          height: 700,
+          background: "radial-gradient(circle, rgba(43,114,215,0.18), transparent 60%)",
+          filter: "blur(40px)",
+        }}
+      />
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: 200,
+          left: -200,
+          width: 500,
+          height: 500,
+          background: "radial-gradient(circle, rgba(74,138,227,0.14), transparent 60%)",
+          filter: "blur(40px)",
+        }}
+      />
 
-      {/* Decorative Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-40 -right-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute -top-20 -left-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="max-w-7xl mx-auto relative">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
+      <div className="sa-container">
+        <div className="grid grid-cols-1 lg:grid-cols-12" style={{ gap: 48, alignItems: "center" }}>
+          {/* Left: Copy */}
           <motion.div
+            className="lg:col-span-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8 backdrop-blur-sm"
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <TrendingUp className="h-4 w-4 text-primary" />
-            <span className="text-sm font-semibold text-primary">
+            <span className="sa-eyebrow" style={{ marginBottom: 24 }}>
+              <span className="dot" />
+              <TrendingUp className="h-3.5 w-3.5" />
               Profit-First Scaling for E-commerce
             </span>
-          </motion.div>
 
-          {/* Main Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.4,
-              delay: 0.1,
-              ease: "easeOut",
-            }}
-            className="text-5xl md:text-7xl mb-6 tracking-tight font-bold text-foreground leading-[1.1]"
-          >
-            Scale Ad Spend Based on{" "}
-            <span className="bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] bg-clip-text text-transparent">
-              Actual Profit
-            </span>
-            ,
-            <br />
-            Not Just ROAS
-          </motion.h1>
-
-          {/* Subheadline */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.4,
-              delay: 0.2,
-              ease: "easeOut",
-            }}
-            className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto leading-relaxed"
-          >
-            ScaleAble shows whether increasing ad spend actually
-            increases profit — using real costs and clear
-            cause-and-effect context.
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.4,
-              delay: 0.3,
-              ease: "easeOut",
-            }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20"
-          >
-            <Button
-              size="lg"
-              asChild
-              className="w-full sm:w-auto text-base font-semibold px-8 bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity"
+            <h1
+              className="sa-display"
+              style={{
+                marginTop: 24,
+                fontSize: "clamp(40px, 6.2vw, 76px)",
+                color: "var(--sa-ink-900)",
+              }}
             >
-              <a href="#pricing">
+              Scale Ad Spend Based on{" "}
+              <span className="sa-gradient-text">Actual Profit</span>,
+              <br />
+              Not Just ROAS
+            </h1>
+
+            <p
+              style={{
+                marginTop: 24,
+                fontSize: "clamp(17px, 1.4vw, 20px)",
+                lineHeight: 1.55,
+                color: "var(--sa-ink-400)",
+                maxWidth: 560,
+              }}
+            >
+              ScaleAble shows whether increasing ad spend actually increases profit — using real
+              costs and clear cause-and-effect context.
+            </p>
+
+            <div className="flex flex-wrap" style={{ gap: 12, marginTop: 32 }}>
+              <a href="#pricing" className="sa-btn sa-btn-primary sa-btn-lg">
                 Get Started
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="h-5 w-5" />
               </a>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full sm:w-auto text-base font-semibold px-8 border-2 hover:bg-muted/50"
-              type="button"
-              onClick={() => openDemo()}
+              <button type="button" onClick={() => openDemo()} className="sa-btn sa-btn-secondary sa-btn-lg">
+                <Play className="h-4 w-4" />
+                Watch Demo
+              </button>
+            </div>
+
+            {/* Inline trust strip */}
+            <div
+              className="flex flex-wrap"
+              style={{ gap: 24, marginTop: 36, color: "var(--sa-ink-400)", fontSize: 13 }}
             >
-              <Play className="mr-2 h-5 w-5" />
-              Watch Demo
-            </Button>
+              <div className="flex items-center" style={{ gap: 8 }}>
+                <Sparkles className="h-4 w-4" style={{ color: "var(--sa-blue-500)" }} />
+                Shopify + Google + Meta
+              </div>
+              <div className="flex items-center" style={{ gap: 8 }}>
+                <span
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: 999,
+                    background: "var(--sa-green)",
+                    boxShadow: "0 0 0 3px rgba(16,185,129,0.18)",
+                  }}
+                />
+                No credit card required
+              </div>
+            </div>
           </motion.div>
 
-          {/* Dashboard Preview */}
+          {/* Right: Dashboard with floating chips */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            className="lg:col-span-6 relative"
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.6,
-              delay: 0.4,
-              ease: "easeOut",
-            }}
-            className="relative"
+            transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
           >
-            <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 rounded-2xl blur-2xl" />
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border bg-white">
-              <img
-                src={dashboardImage}
-                alt="ScaleAble Dashboard"
-                className="w-full h-auto"
-              />
+            <div
+              className="absolute"
+              style={{
+                inset: -24,
+                background:
+                  "radial-gradient(ellipse at center, rgba(43,114,215,0.30), transparent 65%)",
+                filter: "blur(40px)",
+                pointerEvents: "none",
+              }}
+            />
+            <div
+              style={{
+                position: "relative",
+                borderRadius: 20,
+                overflow: "hidden",
+                background: "#fff",
+                border: "1px solid var(--sa-ink-100)",
+                boxShadow: "var(--sa-shadow-lift), var(--sa-shadow-glow)",
+              }}
+            >
+              {/* fake browser chrome */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "10px 14px",
+                  borderBottom: "1px solid var(--sa-ink-100)",
+                  background: "linear-gradient(180deg, #FAFBFD, #F4F6FA)",
+                }}
+              >
+                <span style={{ width: 10, height: 10, borderRadius: 999, background: "#FF5F57" }} />
+                <span style={{ width: 10, height: 10, borderRadius: 999, background: "#FEBC2E" }} />
+                <span style={{ width: 10, height: 10, borderRadius: 999, background: "#28C840" }} />
+                <span
+                  className="sa-mono"
+                  style={{
+                    marginLeft: 12,
+                    fontSize: 11,
+                    color: "var(--sa-ink-400)",
+                  }}
+                >
+                  app.scaleableapp.com / dashboard
+                </span>
+              </div>
+              <img src={dashboardImage} alt="ScaleAble Dashboard" style={{ width: "100%", display: "block" }} />
             </div>
+
+            {/* Floating chip 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="hidden md:flex sa-chip"
+              style={{ position: "absolute", top: -14, left: -18 }}
+            >
+              <span className="dot" />
+              True Profit +28.4%
+            </motion.div>
+
+            {/* Floating chip 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.65 }}
+              className="hidden md:flex sa-chip"
+              style={{ position: "absolute", bottom: -16, right: -16 }}
+            >
+              <span style={{ color: "var(--sa-blue-500)", fontWeight: 700 }}>MER</span>
+              4.12x · live
+            </motion.div>
           </motion.div>
         </div>
       </div>

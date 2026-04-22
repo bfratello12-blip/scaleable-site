@@ -1,93 +1,171 @@
 import { Mail } from "lucide-react";
 import logo from "figma:asset/9e77f0b9e3f695977cea5c5b951b71cf2270fb05.png";
 
+const productLinks = [
+  { label: "Features", href: "/#solution" },
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "Pricing", href: "/#pricing" },
+  { label: "FAQ", href: "/#faq" },
+];
+
+const companyLinks = [
+  { label: "About", href: "/about" },
+  { label: "Blog", href: "#" },
+  { label: "Careers", href: "#" },
+  { label: "Contact", href: "/contact" },
+];
+
+const resourceLinks = [
+  { label: "Documentation", href: "/documentation" },
+  { label: "Data Deletion", href: "/data-deletion" },
+  { label: "Help Center", href: "/help-center" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Service", href: "/terms" },
+];
+
 export function Footer() {
-  const footerLinks = {
-    Product: [
-      { label: "Features", href: "#solution" },
-      { label: "How It Works", href: "#how-it-works" },
-      { label: "Pricing", href: "#pricing" },
-      { label: "FAQ", href: "#faq" }
-    ],
-    Company: [
-      { label: "About", href: "/about" },
-      { label: "Blog", href: "#" },
-      { label: "Careers", href: "#" },
-      { label: "Contact", href: "/contact" }
-    ],
-    Resources: [
-      { label: "Documentation", href: "/documentation" },
-      { label: "Data Deletion", href: "/data-deletion" },
-      { label: "Help Center", href: "/help-center" },
-      { label: "Privacy Policy", href: "/privacy-policy" },
-      { label: "Terms of Service", href: "/terms" }
-    ]
-  };
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-white border-t border-border">
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
-          {/* Brand Section */}
-          <div className="lg:col-span-2">
-            <img src={logo} alt="ScaleAble" className="h-9 mb-6" />
-            <p className="text-muted-foreground mb-8 max-w-sm leading-relaxed">
-              Scale ad spend based on actual profit. Make confident decisions with real costs and clear cause-and-effect context.
+    <footer
+      className="relative overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(900px 500px at 90% 0%, rgba(43,114,215,0.18), transparent 60%), linear-gradient(180deg, #08111F 0%, #050B16 100%)",
+        color: "#A8B6CC",
+        paddingTop: 80,
+        paddingBottom: 40,
+      }}
+    >
+      <div className="sa-container" style={{ padding: "0 24px" }}>
+        <div
+          className="grid"
+          style={{
+            gap: 48,
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+          }}
+        >
+          {/* Brand */}
+          <div style={{ gridColumn: "span 2", minWidth: 260 }}>
+            <a href="/" style={{ display: "inline-block" }}>
+              <img
+                src={logo}
+                alt="ScaleAble"
+                style={{
+                  height: 40,
+                  filter:
+                    "brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,0.4))",
+                }}
+              />
+            </a>
+            <p
+              style={{
+                marginTop: 18,
+                color: "#8593A8",
+                fontSize: 14.5,
+                lineHeight: 1.6,
+                maxWidth: 360,
+              }}
+            >
+              Scale ad spend based on actual profit. Make confident decisions with real costs and
+              clear cause-and-effect context.
             </p>
-            <div className="flex items-center gap-3 text-muted-foreground group">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/15 transition-colors">
-                <Mail className="h-5 w-5 text-primary" />
-              </div>
-              <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=support@scaleableapp.com"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-foreground transition-colors font-medium"
-              >
-                support@scaleableapp.com
-              </a>
-            </div>
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=support@scaleableapp.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                marginTop: 18,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                color: "#BFD6FF",
+                fontSize: 14,
+                fontWeight: 500,
+                padding: "8px 12px",
+                borderRadius: 999,
+                background: "rgba(43,114,215,0.14)",
+                border: "1px solid rgba(106,161,236,0.28)",
+              }}
+            >
+              <Mail className="h-4 w-4" />
+              support@scaleableapp.com
+            </a>
           </div>
 
-          {/* Links Sections */}
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
-              <h4 className="mb-6 font-bold text-foreground">{category}</h4>
-              <ul className="space-y-4">
-                {links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-muted-foreground hover:text-primary transition-colors font-medium"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <FooterColumn title="Product" links={productLinks} />
+          <FooterColumn title="Company" links={companyLinks} />
+          <FooterColumn title="Resources" links={resourceLinks} />
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-muted-foreground text-center md:text-left">
-            <p>© {new Date().getFullYear()} ScaleAble. All rights reserved.</p>
-            <p>ScaleAble is operated by Brian M Fratello</p>
+        <div
+          style={{
+            marginTop: 64,
+            paddingTop: 24,
+            borderTop: "1px solid rgba(255,255,255,0.08)",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 16,
+            alignItems: "center",
+            justifyContent: "space-between",
+            color: "#6B798F",
+            fontSize: 13,
+          }}
+        >
+          <div>
+            © {year} ScaleAble. All rights reserved. ·{" "}
+            <span style={{ color: "#8593A8" }}>ScaleAble is operated by Brian M Fratello</span>
           </div>
-          <div className="flex gap-8">
-            <a href="/privacy-policy" className="text-muted-foreground hover:text-primary transition-colors font-medium">
-              Privacy
-            </a>
-            <a href="/terms" className="text-muted-foreground hover:text-primary transition-colors font-medium">
-              Terms
-            </a>
-            <a href="/cookies" className="text-muted-foreground hover:text-primary transition-colors font-medium">
-              Cookies
-            </a>
+          <div style={{ display: "flex", gap: 18 }}>
+            <a href="/privacy-policy" style={{ color: "#8593A8" }}>Privacy</a>
+            <a href="/terms" style={{ color: "#8593A8" }}>Terms</a>
+            <a href="/cookies" style={{ color: "#8593A8" }}>Cookies</a>
           </div>
         </div>
       </div>
     </footer>
+  );
+}
+
+function FooterColumn({
+  title,
+  links,
+}: {
+  title: string;
+  links: { label: string; href: string }[];
+}) {
+  return (
+    <div>
+      <h4
+        style={{
+          color: "#FFFFFF",
+          fontSize: 13,
+          fontWeight: 700,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+          marginBottom: 16,
+        }}
+      >
+        {title}
+      </h4>
+      <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {links.map((l) => (
+          <li key={l.label}>
+            <a
+              href={l.href}
+              style={{
+                color: "#A8B6CC",
+                fontSize: 14.5,
+                transition: "color 0.15s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#FFFFFF")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "#A8B6CC")}
+            >
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

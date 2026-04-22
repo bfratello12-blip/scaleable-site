@@ -1,95 +1,139 @@
-import { Users, Target, Rocket, BarChart } from "lucide-react";
-import { Card } from "./ui/card";
 import { motion } from "motion/react";
+import { Store, Gauge, Megaphone, TrendingUp, X } from "lucide-react";
+
+const audiences = [
+  {
+    icon: Store,
+    title: "DTC E-commerce Brands",
+    description:
+      "Founders and operators scaling Shopify stores who need profit clarity at every growth stage",
+  },
+  {
+    icon: Gauge,
+    title: "Performance-Driven Operators",
+    description:
+      "Teams tired of ROAS-driven decisions who want to scale based on real profitability metrics",
+  },
+  {
+    icon: Megaphone,
+    title: "Paid Media Teams",
+    description:
+      "Marketing teams managing significant ad budgets who need to prove ROI beyond surface metrics",
+  },
+  {
+    icon: TrendingUp,
+    title: "Growth-Stage Companies",
+    description: "Brands ready to scale intelligently and avoid the margin erosion trap",
+  },
+];
 
 export function ForWho() {
-  const audiences = [
-    {
-      icon: Rocket,
-      title: "DTC E-commerce Brands",
-      description: "Founders and operators scaling Shopify stores who need profit clarity at every growth stage"
-    },
-    {
-      icon: Target,
-      title: "Performance-Driven Operators",
-      description: "Teams tired of ROAS-driven decisions who want to scale based on real profitability metrics"
-    },
-    {
-      icon: BarChart,
-      title: "Paid Media Teams",
-      description: "Marketing teams managing significant ad budgets who need to prove ROI beyond surface metrics"
-    },
-    {
-      icon: Users,
-      title: "Growth-Stage Companies",
-      description: "Brands ready to scale intelligently and avoid the margin erosion trap"
-    }
-  ];
-
   return (
-    <section id="for-who" className="py-28 px-6 bg-white border-y border-border">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="max-w-3xl mx-auto text-center mb-20"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <Users className="h-4 w-4 text-primary" />
-            <span className="text-sm font-semibold text-primary">Who It's For</span>
-          </div>
-          <h2 className="text-4xl md:text-6xl mb-6 font-bold text-foreground leading-tight">
-            Built for Performance-Driven Teams
+    <section id="for-who" className="sa-section relative" style={{ background: "#FFFFFF" }}>
+      <div className="sa-container">
+        <div style={{ maxWidth: 760 }}>
+          <span className="sa-eyebrow">
+            <span className="dot" />
+            Who It's For
+          </span>
+          <h2
+            className="sa-display"
+            style={{ marginTop: 20, fontSize: "clamp(34px, 4.5vw, 56px)", color: "var(--sa-ink-900)" }}
+          >
+            Built for <span className="sa-gradient-text">Performance-Driven</span> Teams
           </h2>
-          <p className="text-xl text-muted-foreground leading-relaxed">
+          <p style={{ marginTop: 16, fontSize: 18, color: "var(--sa-ink-400)" }}>
             ScaleAble is not a general analytics dashboard — it's a profit-scaling decision tool
           </p>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 max-w-5xl mx-auto">
-          {audiences.map((audience, index) => {
-            const Icon = audience.icon;
+        <div
+          className="grid"
+          style={{
+            marginTop: 48,
+            gap: 16,
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          }}
+        >
+          {audiences.map((a, i) => {
+            const Icon = a.icon;
             return (
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
+                key={a.title}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.4, delay: index * 0.1, ease: "easeOut" }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.4, delay: i * 0.06 }}
+                className="sa-card"
+                style={{ padding: 28 }}
               >
-                <Card className="p-8 border-2 border-border bg-white hover:border-primary/40 hover:shadow-xl transition-all duration-300 group h-full">
-                  <div className="flex items-start gap-5">
-                    <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/15 transition-colors">
-                      <Icon className="h-7 w-7 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="mb-3 text-xl font-bold text-foreground">{audience.title}</h3>
-                      <p className="text-muted-foreground leading-relaxed">{audience.description}</p>
-                    </div>
-                  </div>
-                </Card>
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 52,
+                    height: 52,
+                    borderRadius: 14,
+                    background: "linear-gradient(180deg, var(--sa-blue-500), var(--sa-blue-700))",
+                    color: "#FFFFFF",
+                    boxShadow: "0 10px 24px -10px rgba(43,114,215,0.55)",
+                  }}
+                >
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h3 style={{ marginTop: 18, fontSize: 18, fontWeight: 700, color: "var(--sa-ink-900)" }}>
+                  {a.title}
+                </h3>
+                <p style={{ marginTop: 10, color: "var(--sa-ink-500)", fontSize: 14.5, lineHeight: 1.55 }}>
+                  {a.description}
+                </p>
               </motion.div>
             );
           })}
         </div>
 
+        {/* Not for you */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
-          className="max-w-3xl mx-auto"
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.45 }}
+          style={{
+            marginTop: 32,
+            padding: "28px 32px",
+            borderRadius: 16,
+            background: "linear-gradient(180deg, #FFF6F6, #FFEFEF)",
+            border: "1px solid #FBD0D0",
+            display: "flex",
+            gap: 20,
+            alignItems: "flex-start",
+          }}
         >
-          <Card className="p-10 border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-primary/10 shadow-lg">
-            <p className="text-center text-xl font-bold text-foreground mb-4">
-              Not for you if:
+          <div
+            style={{
+              flexShrink: 0,
+              width: 48,
+              height: 48,
+              borderRadius: 12,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "#FBE0E0",
+              color: "#C0383E",
+              border: "1px solid #F4B4B4",
+            }}
+          >
+            <X className="h-5 w-5" strokeWidth={2.5} />
+          </div>
+          <div>
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: "#7B2326" }}>Not for you if:</h3>
+            <p style={{ marginTop: 8, color: "#9B3338", fontSize: 15.5, lineHeight: 1.55 }}>
+              You're looking for another dashboard, better reporting, or more metrics. ScaleAble
+              is about decision clarity at scale — knowing whether to increase spend, which
+              products to push, and when to pull back.
             </p>
-            <p className="text-center text-lg text-muted-foreground leading-relaxed">
-              You're looking for another dashboard, better reporting, or more metrics. ScaleAble is about decision clarity at scale — knowing whether to increase spend, which products to push, and when to pull back.
-            </p>
-          </Card>
+          </div>
         </motion.div>
       </div>
     </section>

@@ -1,88 +1,100 @@
-import { Button } from "./ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 export function CTA() {
   return (
-    <section className="py-28 px-6 bg-gradient-to-b from-white to-background">
-      <div className="max-w-7xl mx-auto">
+    <section className="sa-section relative overflow-hidden">
+      <div className="sa-container">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary to-primary/90 p-16 md:p-20 text-center shadow-2xl"
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5 }}
+          className="sa-surface-dark"
+          style={{
+            position: "relative",
+            borderRadius: 28,
+            padding: "clamp(48px, 7vw, 96px) clamp(28px, 5vw, 72px)",
+            overflow: "hidden",
+            border: "1px solid rgba(74,138,227,0.22)",
+            textAlign: "center",
+          }}
         >
-          <div className="relative z-10">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 mb-8"
-            >
-              <Sparkles className="h-4 w-4 text-white" />
-              <span className="text-sm font-semibold text-white">Get Started Today</span>
-            </motion.div>
-            
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
-              className="text-4xl md:text-6xl text-white mb-6 font-bold leading-tight"
-            >
-              Ready to Scale with Confidence?
-            </motion.h2>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
-              className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed"
-            >
-              Stop guessing. Start scaling based on actual profit. See exactly how your margins behave as ad spend increases.
-            </motion.p>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
-            >
-              <Button
-                size="lg"
-                variant="secondary"
-                asChild
-                className="w-full sm:w-auto text-base font-bold px-8 shadow-xl hover:shadow-2xl transition-all"
-              >
-                <a href="/go/book-demo">
-                  Book a Demo
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
-              </Button>
-              <Button size="lg" variant="ghost" asChild className="w-full sm:w-auto text-base font-bold px-8 text-white hover:bg-white/10 border border-white/30">
-                <a href="#pricing">Get Started</a>
-              </Button>
-            </motion.div>
+          <div className="sa-noise" />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage:
+                "linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)",
+              backgroundSize: "44px 44px",
+              maskImage: "radial-gradient(ellipse 60% 60% at 50% 50%, #000 30%, transparent 75%)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse 60% 60% at 50% 50%, #000 30%, transparent 75%)",
+              pointerEvents: "none",
+            }}
+          />
+          <div style={{ position: "relative" }}>
+            <span className="sa-eyebrow on-dark" style={{ margin: "0 auto" }}>
+              <Sparkles className="h-3.5 w-3.5" />
+              Get Started Today
+            </span>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.4, delay: 0.6, ease: "easeOut" }}
-              className="text-white/80 font-medium"
+            <h2
+              className="sa-display"
+              style={{
+                marginTop: 20,
+                fontSize: "clamp(36px, 5.5vw, 68px)",
+                color: "#FFFFFF",
+              }}
+            >
+              Ready to Scale with{" "}
+              <span style={{
+                background: "linear-gradient(135deg, #7DA9E8 0%, #FFFFFF 100%)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                color: "transparent",
+              }}>
+                Confidence?
+              </span>
+            </h2>
+            <p
+              style={{
+                marginTop: 18,
+                fontSize: 18,
+                color: "#A8B6CC",
+                maxWidth: 680,
+                margin: "18px auto 0",
+                lineHeight: 1.55,
+              }}
+            >
+              Stop guessing. Start scaling based on actual profit. See exactly how your margins
+              behave as ad spend increases.
+            </p>
+
+            <div
+              className="flex flex-wrap"
+              style={{ gap: 12, justifyContent: "center", marginTop: 32 }}
+            >
+              <a href="/go/book-demo" className="sa-btn sa-btn-primary sa-btn-lg">
+                Book a Demo
+                <ArrowRight className="h-5 w-5" />
+              </a>
+              <a href="#pricing" className="sa-btn sa-btn-on-dark sa-btn-lg">
+                Get Started
+              </a>
+            </div>
+
+            <p
+              style={{
+                marginTop: 20,
+                color: "#7E8DA5",
+                fontSize: 13,
+              }}
             >
               No credit card or payment required until after install • Cancel anytime
-            </motion.p>
+            </p>
           </div>
-
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-white/5 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2" />
         </motion.div>
       </div>
     </section>

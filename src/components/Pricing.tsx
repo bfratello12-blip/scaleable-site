@@ -1,286 +1,277 @@
-"use client";
-
-import { Check, Star, DollarSign } from "lucide-react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "./ui/button";
-import { RequestAccessModal } from "./RequestAccessModal";
-import { Card } from "./ui/card";
 import { motion } from "motion/react";
+import { Check, Sparkles } from "lucide-react";
 import { useDemoModal } from "./DemoModalProvider";
+import { useNavigate } from "react-router-dom";
+
+type Plan = {
+  name: string;
+  price: string;
+  period: string;
+  description: string;
+  highlighted?: boolean;
+  badge?: string;
+  features: string[];
+  primary: { label: string; action: "request" | "demo" | "book"; href?: string };
+  secondary?: { label: string; action: "request" | "demo" | "book"; href?: string };
+};
+
+const plans: Plan[] = [
+  {
+    name: "ScaleAble DIY",
+    price: "$79",
+    period: "per month",
+    description: "For founders who want answers, not guesswork",
+    features: [
+      "Full ScaleAble platform access",
+      "Blended MER, contribution and profit metrics",
+      "Forward looking attribution insights",
+      "Google Ads and Meta Ads integrations",
+      "Initial setup and configuration",
+      "One time ad account audit for Google and Meta",
+      "Email support",
+    ],
+    primary: { label: "Request Access", action: "request" },
+    secondary: { label: "Watch Demo", action: "demo" },
+  },
+  {
+    name: "ScaleAble Strategy",
+    price: "$399",
+    period: "per month",
+    description: "Recommended",
+    highlighted: true,
+    badge: "Recommended",
+    features: [
+      "Everything in DIY plus",
+      "Monthly 60 minute strategy call",
+      "Performance review and clear action plan",
+      "Budget allocation and scaling guidance",
+      "Channel prioritization and decision support",
+      "Priority email support",
+    ],
+    primary: { label: "Request Access", action: "request" },
+    secondary: { label: "Book a Call", action: "book", href: "/go/book-strategy" },
+  },
+  {
+    name: "ScaleAble Managed",
+    price: "$2,500",
+    period: "per month",
+    description: "For brands that want profit focused growth handled end to end",
+    features: [
+      "Everything in Strategy plus",
+      "Full Google Ads and Meta Ads management",
+      "Ongoing optimization and testing",
+      "Budget scaling with profit guardrails",
+      "Monthly strategy and performance calls",
+      "Direct email access to a senior ad manager",
+      "Managed by an expert with over a decade of enterprise agency experience",
+    ],
+    primary: { label: "Book a Call", action: "book", href: "/go/book-managed" },
+    secondary: { label: "Watch Demo", action: "demo" },
+  },
+];
 
 export function Pricing() {
-  const [requestAccessOpen, setRequestAccessOpen] = useState(false);
-  const navigate = useNavigate();
   const { openDemo } = useDemoModal();
-  const plans = [
-    {
-      name: "ScaleAble DIY",
-      price: "$79",
-      period: "per month",
-      description:
-        "For founders who want answers, not guesswork",
-      features: [
-        "Full ScaleAble platform access",
-        "Blended MER, contribution and profit metrics",
-        "Forward looking attribution insights",
-        "Google Ads and Meta Ads integrations",
-        "Initial setup and configuration",
-        "One time ad account audit for Google and Meta",
-        "Email support",
-      ],
-      secondaryCta: "Watch Demo",
-      highlighted: false,
-    },
-    {
-      name: "ScaleAble Strategy",
-      price: "$399",
-      period: "per month",
-      description: "Recommended",
-      features: [
-        "Everything in DIY plus",
-        "Monthly 60 minute strategy call",
-        "Performance review and clear action plan",
-        "Budget allocation and scaling guidance",
-        "Channel prioritization and decision support",
-        "Priority email support",
-      ],
-      secondaryCta: "Book a Call",
-      highlighted: true,
-    },
-    {
-      name: "ScaleAble Managed",
-      price: "$2,500",
-      period: "per month",
-      description:
-        "For brands that want profit focused growth handled end to end",
-      features: [
-        "Everything in Strategy plus",
-        "Full Google Ads and Meta Ads management",
-        "Ongoing optimization and testing",
-        "Budget scaling with profit guardrails",
-        "Monthly strategy and performance calls",
-        "Direct email access to a senior ad manager",
-        "Managed by an expert with over a decade of enterprise agency experience",
-      ],
-      secondaryCta: "Book a Call",
-      highlighted: false,
-    },
-  ];
+  const navigate = useNavigate();
+
+  const handle = (a: Plan["primary"]) => {
+    if (a.action === "request") navigate("/request-access");
+    else if (a.action === "demo") openDemo();
+    else if (a.action === "book" && a.href) navigate(a.href);
+  };
 
   return (
-    <section
-      id="pricing"
-      className="py-28 px-6 bg-white border-y border-border"
-    >
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="max-w-3xl mx-auto text-center mb-20"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <DollarSign className="h-4 w-4 text-primary" />
-            <span className="text-sm font-semibold text-primary">
-              Transparent Pricing
-            </span>
-          </div>
-          <h2 className="text-4xl md:text-6xl mb-6 font-bold text-foreground leading-tight">
-            Choose Your Growth Path
+    <section id="pricing" className="sa-section relative" style={{ background: "#FFFFFF" }}>
+      <div className="sa-container">
+        <div style={{ maxWidth: 760, textAlign: "center", margin: "0 auto" }}>
+          <span className="sa-eyebrow" style={{ margin: "0 auto" }}>
+            <span className="dot" />
+            Transparent Pricing
+          </span>
+          <h2
+            className="sa-display"
+            style={{ marginTop: 20, fontSize: "clamp(34px, 4.5vw, 56px)", color: "var(--sa-ink-900)" }}
+          >
+            Choose Your <span className="sa-gradient-text">Growth Path</span>
           </h2>
-          <p className="text-xl text-muted-foreground leading-relaxed">
-            From DIY insights to fully managed growth — pick the
-            plan that fits your stage
+          <p style={{ marginTop: 16, fontSize: 18, color: "var(--sa-ink-400)" }}>
+            From DIY insights to fully managed growth — pick the plan that fits your stage
           </p>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start max-w-6xl mx-auto">
-          {plans.map((plan, index) => (
+        <div
+          className="grid"
+          style={{
+            marginTop: 56,
+            gap: 20,
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            alignItems: "stretch",
+          }}
+        >
+          {plans.map((p, i) => (
             <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
+              key={p.name}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{
-                duration: 0.4,
-                delay: index * 0.1,
-                ease: "easeOut",
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.45, delay: i * 0.08 }}
+              style={{
+                position: "relative",
+                borderRadius: 20,
+                padding: 32,
+                background: p.highlighted
+                  ? "linear-gradient(180deg, #0A1628 0%, #102744 100%)"
+                  : "#FFFFFF",
+                border: p.highlighted ? "1px solid rgba(74,138,227,0.4)" : "1px solid var(--sa-ink-100)",
+                boxShadow: p.highlighted
+                  ? "0 30px 80px -20px rgba(43,114,215,0.45), inset 0 1px 0 rgba(255,255,255,0.06)"
+                  : "var(--sa-shadow-soft)",
+                color: p.highlighted ? "#E8EDF5" : "var(--sa-ink-900)",
+                transform: p.highlighted ? "translateY(-8px)" : "none",
+                display: "flex",
+                flexDirection: "column",
               }}
             >
-              <Card
-                className={`relative p-8 flex flex-col h-full transition-all duration-300 ${
-                  plan.highlighted
-                    ? "border-2 border-primary shadow-2xl shadow-primary/20 scale-[1.05] bg-white z-10"
-                    : "border-2 border-border shadow-lg bg-white hover:border-primary/30 hover:shadow-xl"
-                }`}
-              >
-                {/* Recommended Badge */}
-                {plan.highlighted && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <div className="flex items-center gap-1.5 bg-gradient-to-r from-primary to-primary/90 text-white px-5 py-2 rounded-full text-sm font-bold shadow-lg shadow-primary/40">
-                      <Star className="h-4 w-4 fill-current" />
-                      <span>Recommended</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Plan Header */}
-                <div className="mb-6">
-                  <h3 className="text-2xl font-bold text-foreground mb-3">
-                    {plan.name}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed min-h-[3rem]">
-                    {plan.description}
-                  </p>
+              {p.badge && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: -14,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    padding: "6px 14px",
+                    borderRadius: 999,
+                    background: "linear-gradient(180deg, var(--sa-blue-400), var(--sa-blue-600))",
+                    color: "#FFFFFF",
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    boxShadow: "0 12px 30px -10px rgba(43,114,215,0.55)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                  }}
+                >
+                  <Sparkles className="h-3.5 w-3.5" />
+                  {p.badge}
                 </div>
+              )}
 
-                {/* Pricing */}
-                <div className="mb-8">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-bold text-foreground">
-                      {plan.price}
-                    </span>
-                    <span className="text-muted-foreground font-medium">
-                      {plan.period}
-                    </span>
-                  </div>
-                </div>
+              <div>
+                <h3
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 700,
+                    color: p.highlighted ? "#FFFFFF" : "var(--sa-ink-900)",
+                  }}
+                >
+                  {p.name}
+                </h3>
+                <p
+                  style={{
+                    marginTop: 6,
+                    fontSize: 14,
+                    color: p.highlighted ? "#A8B6CC" : "var(--sa-ink-400)",
+                    minHeight: 40,
+                  }}
+                >
+                  {p.description}
+                </p>
+              </div>
 
-                {/* Primary CTA Button */}
-                {plan.name === "ScaleAble Managed" ? (
-                  <Button
-                    size="lg"
-                    asChild
-                    className="w-full mb-3 font-semibold text-base bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity"
-                  >
-                    <a href="/go/book-managed">Book a Call</a>
-                  </Button>
-                ) : (
-                  <Button
-                    size="lg"
-                    className="w-full mb-3 font-semibold text-base bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] hover:opacity-90 transition-opacity"
-                    type="button"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      event.stopPropagation();
-                      if (
-                        typeof window !== "undefined" &&
-                        window.matchMedia("(max-width: 639px)").matches
-                      ) {
-                        navigate("/request-access");
-                        return;
-                      }
-                      setRequestAccessOpen(true);
+              <div style={{ marginTop: 20, display: "flex", alignItems: "baseline", gap: 8 }}>
+                <span
+                  className="sa-display"
+                  style={{
+                    fontSize: 56,
+                    color: p.highlighted ? "#FFFFFF" : "var(--sa-ink-900)",
+                    letterSpacing: "-0.04em",
+                  }}
+                >
+                  {p.price}
+                </span>
+                <span style={{ color: p.highlighted ? "#A8B6CC" : "var(--sa-ink-400)", fontSize: 14 }}>
+                  {p.period}
+                </span>
+              </div>
+
+              <div
+                style={{
+                  height: 1,
+                  margin: "24px 0",
+                  background: p.highlighted ? "rgba(255,255,255,0.10)" : "var(--sa-ink-100)",
+                }}
+              />
+
+              <ul style={{ display: "flex", flexDirection: "column", gap: 12, flex: 1 }}>
+                {p.features.map((f) => (
+                  <li
+                    key={f}
+                    style={{
+                      display: "flex",
+                      gap: 10,
+                      alignItems: "flex-start",
+                      fontSize: 14.5,
+                      color: p.highlighted ? "#D8E1EE" : "var(--sa-ink-700)",
+                      lineHeight: 1.5,
                     }}
                   >
-                    Request Access
-                  </Button>
-                )}
+                    <span
+                      style={{
+                        flexShrink: 0,
+                        width: 20,
+                        height: 20,
+                        borderRadius: 999,
+                        marginTop: 1,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        background: p.highlighted ? "rgba(74,138,227,0.22)" : "var(--sa-blue-50)",
+                        color: p.highlighted ? "#7DA9E8" : "var(--sa-blue-600)",
+                      }}
+                    >
+                      <Check className="h-3 w-3" strokeWidth={3} />
+                    </span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
 
-                {/* Secondary CTA */}
-                {plan.name === "ScaleAble Managed" && (
+              <div style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 10 }}>
+                <button
+                  type="button"
+                  onClick={() => handle(p.primary)}
+                  className={p.highlighted ? "sa-btn sa-btn-primary" : "sa-btn sa-btn-primary"}
+                  style={{ width: "100%" }}
+                >
+                  {p.primary.label}
+                </button>
+                {p.secondary && (
                   <button
                     type="button"
-                    onClick={() => openDemo()}
-                    className="w-full mb-8 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                    onClick={() => handle(p.secondary!)}
+                    className={p.highlighted ? "sa-btn sa-btn-on-dark" : "sa-btn sa-btn-secondary"}
+                    style={{ width: "100%" }}
                   >
-                    Watch Demo
+                    {p.secondary.label}
                   </button>
                 )}
-                {plan.name !== "ScaleAble Managed" &&
-                  (plan.secondaryCta === "Book a Call" ? (
-                    <a
-                      href="/go/book-strategy"
-                      className="mb-8 text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center justify-center"
-                    >
-                      Book a Call
-                    </a>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (plan.secondaryCta === "Watch Demo") {
-                          openDemo();
-                        }
-                      }}
-                      className="w-full mb-8 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-                    >
-                      {plan.secondaryCta}
-                    </button>
-                  ))}
-
-                {/* Features */}
-                <div className="space-y-4 flex-grow">
-                  <p className="text-sm font-bold text-foreground mb-5 uppercase tracking-wide">
-                    Includes
-                  </p>
-                  <ul className="space-y-4">
-                    {plan.features.map(
-                      (feature, featureIndex) => (
-                        <li
-                          key={featureIndex}
-                          className="flex items-start gap-3"
-                        >
-                          <div
-                            className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 ${
-                              plan.highlighted
-                                ? "bg-primary/15 border border-primary/30"
-                                : "bg-muted border border-border"
-                            }`}
-                          >
-                            <Check
-                              className={`h-3.5 w-3.5 ${
-                                plan.highlighted
-                                  ? "text-primary"
-                                  : "text-primary/70"
-                              }`}
-                            />
-                          </div>
-                          <span
-                            className={`leading-relaxed ${
-                              featureIndex === 0 && index > 0
-                                ? "font-semibold text-foreground"
-                                : "text-muted-foreground"
-                            }`}
-                          >
-                            {feature}
-                          </span>
-                        </li>
-                      ),
-                    )}
-                  </ul>
-                </div>
-              </Card>
+              </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Additional Info */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{
-            duration: 0.4,
-            delay: 0.3,
-            ease: "easeOut",
+        <p
+          style={{
+            marginTop: 32,
+            textAlign: "center",
+            color: "var(--sa-ink-400)",
+            fontSize: 14,
           }}
-          className="mt-16 text-center"
         >
-          <p className="text-lg text-muted-foreground">
-            <span className="font-semibold text-foreground">
-              No credit card or payment required
-            </span>
-            {" "}until app install is complete.
-          </p>
-        </motion.div>
-
-        <RequestAccessModal
-          open={requestAccessOpen}
-          onOpenChange={setRequestAccessOpen}
-        />
+          No credit card or payment required until app install is complete.
+        </p>
       </div>
     </section>
   );

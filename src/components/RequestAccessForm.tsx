@@ -1,430 +1,409 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
+import { Check, X, ShieldCheck, Mail } from "lucide-react";
 import logo from "../assets/9e77f0b9e3f695977cea5c5b951b71cf2270fb05.png";
 
 export type RequestAccessFormProps = {
-	variant?: "modal" | "page";
-	onSuccess?: () => void;
-	onCancel?: () => void;
-	bodyScrollRef?: React.RefObject<HTMLDivElement>;
-};
-
-type FormState = {
-	email: string;
-	storeUrl: string;
-	averageRevenue: string;
-	channels: {
-		googleAds: boolean;
-		metaAds: boolean;
-		other: boolean;
-		otherText: string;
-		notRunningAds: boolean;
-	};
+variant?: "modal" | "page";
+onSuccess?: () => void;
+onCancel?: () => void;
+bodyScrollRef?: React.RefObject<HTMLDivElement>;
 };
 
 const revenueOptions = [
-	"Select average revenue",
-	"Under $25k",
-	"$25k–$100k",
-	"$100k–$500k",
-	"$500k–$1M",
-	"$1M+",
+"Select average revenue",
+"Under $25k",
+"$25k–$100k",
+"$100k–$500k",
+"$500k–$1M",
+"$1M+",
 ];
 
 export function RequestAccessForm({
-	variant = "modal",
-	onSuccess,
-	onCancel,
-	bodyScrollRef,
+variant = "modal",
+onSuccess,
+onCancel,
+bodyScrollRef,
 }: RequestAccessFormProps) {
-	const [email, setEmail] = useState("");
-	const [storeUrl, setStoreUrl] = useState("");
-	const [averageRevenue, setAverageRevenue] = useState(revenueOptions[0]);
-	const [googleAds, setGoogleAds] = useState(false);
-	const [metaAds, setMetaAds] = useState(false);
-	const [other, setOther] = useState(false);
-	const [otherText, setOtherText] = useState("");
-	const [notRunningAds, setNotRunningAds] = useState(false);
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [submitError, setSubmitError] = useState("");
-	const [submitSuccess, setSubmitSuccess] = useState("");
+const [email, setEmail] = useState("");
+const [storeUrl, setStoreUrl] = useState("");
+const [averageRevenue, setAverageRevenue] = useState(revenueOptions[0]);
+const [googleAds, setGoogleAds] = useState(false);
+const [metaAds, setMetaAds] = useState(false);
+const [other, setOther] = useState(false);
+const [otherText, setOtherText] = useState("");
+const [notRunningAds, setNotRunningAds] = useState(false);
+const [isSubmitting, setIsSubmitting] = useState(false);
+const [submitError, setSubmitError] = useState("");
+const [submitSuccess, setSubmitSuccess] = useState("");
 
-	const isSubmitDisabled = useMemo(
-		() => email.trim().length === 0 || storeUrl.trim().length === 0,
-		[email, storeUrl]
-	);
+const isSubmitDisabled = useMemo(
+() => email.trim().length === 0 || storeUrl.trim().length === 0,
+[email, storeUrl]
+);
 
-	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		if (isSubmitDisabled || isSubmitting) return;
+const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+event.preventDefault();
+if (isSubmitDisabled || isSubmitting) return;
 
-		setIsSubmitting(true);
-		setSubmitError("");
-		setSubmitSuccess("");
+setIsSubmitting(true);
+setSubmitError("");
+setSubmitSuccess("");
 
-		const payload: FormState = {
-			email: email.trim(),
-			storeUrl: storeUrl.trim(),
-			averageRevenue,
-			channels: {
-				googleAds,
-				metaAds,
-				other,
-				otherText: other ? otherText.trim() : "",
-				notRunningAds,
-			},
-		};
+const payload = {
+email: email.trim(),
+storeUrl: storeUrl.trim(),
+averageRevenue,
+channels: {
+googleAds,
+metaAds,
+other,
+otherText: other ? otherText.trim() : "",
+notRunningAds,
+},
+};
 
-		try {
-			const response = await fetch("/api/request-access", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(payload),
-			});
+try {
+const response = await fetch("/api/request-access", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify(payload),
+});
+if (!response.ok) throw new Error("Request failed");
+setSubmitSuccess("Thanks — we’ll review your store and follow up by email.");
+onSuccess?.();
+} catch (error) {
+setSubmitError("Something went wrong. Please try again in a moment.");
+} finally {
+setIsSubmitting(false);
+}
+};
 
-			if (!response.ok) throw new Error("Request failed");
+const isModal = variant === "modal";
 
-			setSubmitSuccess("Thanks — we’ll review your store and follow up by email.");
-			onSuccess?.();
-		} catch (error) {
-			setSubmitError("Something went wrong. Please try again in a moment.");
-		} finally {
-			setIsSubmitting(false);
-		}
-	};
+const channels = [
+{ label: "Google Ads", checked: googleAds, set: setGoogleAds },
+{ label: "Meta (Facebook / Instagram)", checked: metaAds, set: setMetaAds },
+{ label: "Other", checked: other, set: setOther },
+{ label: "Not running ads yet", checked: notRunningAds, set: setNotRunningAds },
+];
 
-	const isModal = variant === "modal";
+return (
+<form
+onSubmit={handleSubmit}
+className={isModal ? "flex min-h-0 flex-col overflow-hidden" : "flex flex-col"}
+style={{ background: "white", height: isModal ? "100%" : "auto" }}
+>
+{/* Accent bar */}
+<div
+aria-hidden
+style={{
+height: 4,
+background:
+"linear-gradient(90deg, #1F5FB8 0%, #2B72D7 50%, #4A8DE0 100%)",
+flexShrink: 0,
+}}
+/>
 
-	return (
-		<form
-			onSubmit={handleSubmit}
-			className={
-				isModal
-					? "flex min-h-0 flex-col overflow-hidden"
-					: "flex flex-col"
-			}
-		>
-			{/* Header */}
-			<div className="relative overflow-hidden bg-[#e6f0ff]">
-				<div
-					className="absolute inset-0 pointer-events-none"
-					style={{
-						backgroundImage:
-							"linear-gradient(180deg, rgba(76,140,225,0.9) 0%, rgba(150,190,245,0.8) 55%, rgba(255,255,255,1) 100%)",
-					}}
-				/>
+{/* Header */}
+<div
+style={{
+padding: "24px 28px 20px",
+borderBottom: "1px solid var(--sa-ink-100)",
+display: "flex",
+alignItems: "flex-start",
+justifyContent: "space-between",
+gap: 16,
+flexShrink: 0,
+background: "white",
+position: "relative",
+}}
+>
+<div style={{ minWidth: 0, flex: 1 }}>
+<img src={logo} alt="ScaleAble" style={{ height: 26, marginBottom: 14 }} />
+<h2
+className="sa-display"
+style={{
+fontSize: 22,
+lineHeight: 1.2,
+fontWeight: 600,
+letterSpacing: "-0.02em",
+margin: 0,
+color: "var(--sa-ink-900)",
+}}
+>
+Request access to ScaleAble
+</h2>
+<p
+style={{
+margin: "6px 0 0",
+fontSize: 13.5,
+color: "var(--sa-ink-600, #6B7785)",
+lineHeight: 1.5,
+}}
+>
+See true profit, not just ROAS — powered by your real Shopify data.
+</p>
+</div>
 
-				{onCancel && isModal && (
-					<button
-						type="button"
-						onClick={onCancel}
-						aria-label="Close"
-						className="absolute right-3 top-3 z-20 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/70 text-slate-500 shadow-sm transition hover:bg-white hover:text-slate-800"
-					>
-						<svg
-							viewBox="0 0 24 24"
-							className="h-4 w-4"
-							fill="none"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						>
-							<path d="M18 6 6 18" />
-							<path d="m6 6 12 12" />
-						</svg>
-					</button>
-				)}
+{onCancel && isModal && (
+<button
+type="button"
+onClick={onCancel}
+aria-label="Close"
+style={{
+flexShrink: 0,
+width: 32,
+height: 32,
+display: "inline-flex",
+alignItems: "center",
+justifyContent: "center",
+borderRadius: 999,
+background: "var(--sa-ink-50, #F4F6FA)",
+border: "1px solid var(--sa-ink-100)",
+color: "var(--sa-ink-700)",
+cursor: "pointer",
+transition: "all 0.15s",
+}}
+onMouseEnter={(e) => {
+(e.currentTarget as HTMLButtonElement).style.background = "var(--sa-ink-100)";
+}}
+onMouseLeave={(e) => {
+(e.currentTarget as HTMLButtonElement).style.background = "var(--sa-ink-50, #F4F6FA)";
+}}
+>
+<X className="h-4 w-4" />
+</button>
+)}
+</div>
 
-				<div className="relative z-10 px-4 pb-5 pt-7 sm:px-8">
-					<div className="flex items-start gap-3 sm:gap-4">
-						<div className="min-w-0">
-							<h2 className="mt-4 text-xl font-semibold text-white">
-								Get Access to ScaleAble
-							</h2>
-							<p className="mt-2 text-sm text-slate-700/80">
-								See true profit, not just ROAS — powered by your real Shopify data.
-							</p>
+{/* Body */}
+<div
+ref={bodyScrollRef}
+className={isModal ? "flex-1 min-h-0 overflow-y-auto" : ""}
+style={{
+padding: "24px 28px",
+background: "white",
+WebkitOverflowScrolling: "touch",
+}}
+>
+{/* Store info */}
+<div style={{ marginBottom: 24 }}>
+<div className="sa-eyebrow" style={{ marginBottom: 12, fontSize: 11 }}>
+<span className="sa-eyebrow-dot" />
+Store Info
+</div>
 
-							<ul className="mt-4 mb-4 space-y-1 text-xs text-slate-700/80">
-								<li className="flex items-start gap-2">
-									<svg
-										viewBox="0 0 20 20"
-										className="mt-[1px] h-4 w-4 shrink-0 fill-emerald-500 text-emerald-500"
-										fill="currentColor"
-									>
-										<path
-											fill="#10B981"
-											d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.252a1 1 0 0 1-1.42.004L3.29 9.214a1 1 0 1 1 1.42-1.408l3.08 3.104 6.49-6.536a1 1 0 0 1 1.424-.003Z"
-										/>
-									</svg>
-									<span>Profit-first metrics (MER, contribution profit)</span>
-								</li>
-								<li className="flex items-start gap-2">
-									<svg
-										viewBox="0 0 20 20"
-										className="mt-[1px] h-4 w-4 shrink-0 fill-emerald-500 text-emerald-500"
-										fill="currentColor"
-									>
-										<path
-											fill="#10B981"
-											d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.252a1 1 0 0 1-1.42.004L3.29 9.214a1 1 0 1 1 1.42-1.408l3.08 3.104 6.49-6.536a1 1 0 0 1 1.424-.003Z"
-										/>
-									</svg>
-									<span>Shopify as the source of truth</span>
-								</li>
-								<li className="flex items-start gap-2">
-									<svg
-										viewBox="0 0 20 20"
-										className="mt-[1px] h-4 w-4 shrink-0 fill-emerald-500 text-emerald-500"
-										fill="currentColor"
-									>
-										<path
-											fill="#10B981"
-											d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.252a1 1 0 0 1-1.42.004L3.29 9.214a1 1 0 1 1 1.42-1.408l3.08 3.104 6.49-6.536a1 1 0 0 1 1.424-.003Z"
-										/>
-									</svg>
-									<span>Built for scaling paid media</span>
-								</li>
-							</ul>
-						</div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-3" style={{ marginBottom: 12 }}>
+<div>
+<label className="sa-label" htmlFor="request-access-email">
+Email address <span style={{ color: "#E04A5F" }}>*</span>
+</label>
+<input
+id="request-access-email"
+type="email"
+required
+value={email}
+onChange={(e) => setEmail(e.target.value)}
+className="sa-input"
+placeholder="you@company.com"
+/>
+</div>
 
-						<div className="ml-auto shrink-0 pr-1 pt-4">
-							<img
-								src={logo}
-								alt="ScaleAble"
-								className="mt-3 h-7 w-auto rounded-lg object-contain sm:h-9"
-							/>
-						</div>
-					</div>
+<div>
+<label className="sa-label" htmlFor="request-access-store">
+Shopify store URL <span style={{ color: "#E04A5F" }}>*</span>
+</label>
+<input
+id="request-access-store"
+type="text"
+required
+value={storeUrl}
+onChange={(e) => setStoreUrl(e.target.value)}
+className="sa-input"
+placeholder="yourstore.myshopify.com"
+/>
+</div>
+</div>
 
-					<div className="mt-6 border-b border-slate-200" />
-				</div>
-			</div>
+<div>
+<label className="sa-label" htmlFor="request-access-revenue">
+Average monthly revenue
+</label>
+<select
+id="request-access-revenue"
+value={averageRevenue}
+onChange={(e) => setAverageRevenue(e.target.value)}
+className="sa-select"
+>
+{revenueOptions.map((option) => (
+<option key={option} value={option}>
+{option}
+</option>
+))}
+</select>
+</div>
+</div>
 
-			{/* Body */}
-			<div
-				ref={bodyScrollRef}
-				className={
-					isModal
-						? "flex-1 min-h-0 overflow-y-auto overscroll-contain px-6 pb-28 pt-8 sm:px-8"
-						: "px-6 pb-10 pt-8 sm:px-8"
-				}
-				style={isModal ? { WebkitOverflowScrolling: "touch" } : undefined}
-			>
-				<div className="space-y-10">
-					<div className="space-y-4 rounded-2xl border border-blue-100/70 bg-blue-50/40 px-5 pb-7 pt-6 shadow-sm">
-						<p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-600">
-							Store Info
-						</p>
+{/* Channels */}
+<div>
+<div className="sa-eyebrow" style={{ marginBottom: 12, fontSize: 11 }}>
+<span className="sa-eyebrow-dot" />
+Advertising Channels
+</div>
 
-						<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-							<div className="space-y-2">
-								<label
-									htmlFor="request-access-email"
-									className="text-sm font-medium text-slate-700"
-								>
-									Email address <span className="text-rose-500">*</span>
-								</label>
-								<input
-									id="request-access-email"
-									type="email"
-									required
-									value={email}
-									onChange={(event) => setEmail(event.target.value)}
-									className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 sm:text-sm"
-									placeholder="you@company.com"
-								/>
-							</div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+{channels.map((c) => (
+<label
+key={c.label}
+className={`sa-channel-chip ${c.checked ? "is-checked" : ""}`}
+>
+<input
+type="checkbox"
+checked={c.checked}
+onChange={(e) => c.set(e.target.checked)}
+style={{ position: "absolute", opacity: 0, pointerEvents: "none" }}
+/>
+<span className="sa-channel-check">
+{c.checked && <Check className="h-3 w-3" strokeWidth={3} />}
+</span>
+<span>{c.label}</span>
+</label>
+))}
+</div>
 
-							<div className="space-y-2">
-								<label
-									htmlFor="request-access-store"
-									className="text-sm font-medium text-slate-700"
-								>
-									Shopify store URL <span className="text-rose-500">*</span>
-								</label>
-								<input
-									id="request-access-store"
-									type="text"
-									required
-									value={storeUrl}
-									onChange={(event) => setStoreUrl(event.target.value)}
-									className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 sm:text-sm"
-									placeholder="yourstore.myshopify.com"
-								/>
-							</div>
-						</div>
+{other && (
+<div style={{ marginTop: 12 }}>
+<label className="sa-label" htmlFor="request-access-other">
+Other platform
+</label>
+<input
+id="request-access-other"
+type="text"
+value={otherText}
+onChange={(e) => setOtherText(e.target.value)}
+className="sa-input"
+placeholder="Tell us more"
+/>
+</div>
+)}
+</div>
 
-						<div className="space-y-2 pb-6">
-							<label
-								htmlFor="request-access-revenue"
-								className="text-sm font-medium text-slate-700"
-							>
-								Average monthly revenue
-							</label>
-							<select
-								id="request-access-revenue"
-								value={averageRevenue}
-								onChange={(event) => setAverageRevenue(event.target.value)}
-								className="h-11 w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 text-base text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 sm:text-sm"
-							>
-								{revenueOptions.map((option) => (
-									<option key={option} value={option}>
-										{option}
-									</option>
-								))}
-							</select>
-						</div>
-					</div>
+{/* Trust strip */}
+<div
+style={{
+marginTop: 20,
+padding: "12px 14px",
+borderRadius: 10,
+background: "linear-gradient(180deg, #F4F8FE 0%, #FAFBFD 100%)",
+border: "1px solid #E4ECF7",
+display: "flex",
+alignItems: "center",
+gap: 10,
+fontSize: 12.5,
+color: "var(--sa-ink-700)",
+}}
+>
+<ShieldCheck
+className="h-4 w-4"
+style={{ color: "var(--sa-blue-500, #2B72D7)", flexShrink: 0 }}
+/>
+<span>
+No credit card required. We’ll only use your info to review your store.
+</span>
+</div>
 
-					<div className="mt-4 space-y-4">
-						<p className="text-sm font-semibold text-slate-700">
-							Advertising channels
-						</p>
+{/* Status messages */}
+<div aria-live="polite" style={{ marginTop: 14 }}>
+{submitSuccess && (
+<div
+role="status"
+style={{
+borderRadius: 12,
+padding: "14px 16px",
+background: "linear-gradient(180deg, #ECFDF5 0%, #F0FDF7 100%)",
+border: "1px solid #A7F3D0",
+}}
+>
+<p style={{ margin: 0, fontSize: 14, fontWeight: 600, color: "#065F46" }}>
+Request received ✓
+</p>
+<p style={{ margin: "4px 0 0", fontSize: 13, color: "#047857" }}>
+{submitSuccess}
+</p>
+</div>
+)}
+{submitError && !submitSuccess && (
+<div
+style={{
+borderRadius: 12,
+padding: "12px 14px",
+background: "#FEF2F2",
+border: "1px solid #FECACA",
+fontSize: 13,
+color: "#B91C1C",
+}}
+>
+{submitError}
+</div>
+)}
+</div>
+</div>
 
-						<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-							<label
-								className={`flex items-start gap-3 rounded-xl border bg-white px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 ${
-									googleAds
-										? "border-blue-500 bg-blue-50/60 shadow-[0_10px_26px_-20px_rgba(37,99,235,0.45)]"
-										: "border-slate-200"
-								}`}
-							>
-								<input
-									type="checkbox"
-									checked={googleAds}
-									onChange={(event) => setGoogleAds(event.target.checked)}
-									className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40"
-								/>
-								Google Ads
-							</label>
+{/* Footer */}
+<div
+style={{
+padding: "14px 28px 18px",
+background: "var(--sa-ink-50, #F8FAFD)",
+borderTop: "1px solid var(--sa-ink-100)",
+display: "flex",
+alignItems: "center",
+justifyContent: "space-between",
+gap: 12,
+flexWrap: "wrap",
+flexShrink: 0,
+}}
+>
+<a
+href="mailto:support@scaleableapp.com"
+style={{
+fontSize: 12.5,
+color: "var(--sa-ink-600, #6B7785)",
+textDecoration: "none",
+display: "inline-flex",
+alignItems: "center",
+gap: 6,
+}}
+>
+<Mail className="h-3.5 w-3.5" />
+support@scaleableapp.com
+</a>
 
-							<label
-								className={`flex items-start gap-3 rounded-xl border bg-white px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 ${
-									metaAds
-										? "border-blue-500 bg-blue-50/60 shadow-[0_10px_26px_-20px_rgba(37,99,235,0.45)]"
-										: "border-slate-200"
-								}`}
-							>
-								<input
-									type="checkbox"
-									checked={metaAds}
-									onChange={(event) => setMetaAds(event.target.checked)}
-									className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40"
-								/>
-								Meta (Facebook / Instagram)
-							</label>
-
-							<label
-								className={`flex items-start gap-3 rounded-xl border bg-white px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 ${
-									other
-										? "border-blue-500 bg-blue-50/60 shadow-[0_10px_26px_-20px_rgba(37,99,235,0.45)]"
-										: "border-slate-200"
-								}`}
-							>
-								<input
-									type="checkbox"
-									checked={other}
-									onChange={(event) => setOther(event.target.checked)}
-									className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40"
-								/>
-								Other
-							</label>
-
-							<label
-								className={`flex items-start gap-3 rounded-xl border bg-white px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 ${
-									notRunningAds
-										? "border-blue-500 bg-blue-50/60 shadow-[0_10px_26px_-20px_rgba(37,99,235,0.45)]"
-										: "border-slate-200"
-								}`}
-							>
-								<input
-									type="checkbox"
-									checked={notRunningAds}
-									onChange={(event) => setNotRunningAds(event.target.checked)}
-									className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500/40"
-								/>
-								Not running ads yet
-							</label>
-						</div>
-
-						{other && (
-							<div className="space-y-2">
-								<label
-									htmlFor="request-access-other"
-									className="text-sm font-medium text-slate-700"
-								>
-									Other platform
-								</label>
-								<input
-									id="request-access-other"
-									type="text"
-									value={otherText}
-									onChange={(event) => setOtherText(event.target.value)}
-									className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-slate-900 shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 sm:text-sm"
-									placeholder="Tell us more"
-								/>
-							</div>
-						)}
-					</div>
-				</div>
-			</div>
-
-			{/* Footer */}
-			<div
-				className={
-					isModal
-						? "sticky bottom-0 border-t border-blue-100/70 bg-white/95 px-6 pb-5 pt-4 backdrop-blur sm:px-8"
-						: "mt-6 border-t border-blue-100/70 bg-white/95 px-6 pb-5 pt-4 sm:px-8"
-				}
-			>
-				<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-					<div className="text-sm text-slate-500">
-						<div>No credit card required until setup is complete.</div>
-						<div className="text-xs text-slate-400">
-							We’ll review your store and follow up by email.
-						</div>
-					</div>
-
-					<div className="flex items-center justify-end gap-3">
-						{onCancel && (
-							<button
-								type="button"
-								onClick={onCancel}
-								className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
-							>
-								Cancel
-							</button>
-						)}
-						<button
-							type="submit"
-							disabled={isSubmitDisabled || isSubmitting || Boolean(submitSuccess)}
-							className="rounded-lg bg-gradient-to-b from-[#2B72D7] to-[#1f5fb8] px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 disabled:cursor-not-allowed disabled:from-slate-300 disabled:to-slate-300"
-						>
-							{isSubmitting ? "Sending..." : "Request Access"}
-						</button>
-					</div>
-				</div>
-
-				<div className="mt-2 text-sm" aria-live="polite">
-					{submitSuccess && (
-						<div
-							role="status"
-							className="mb-3 rounded-lg border border-emerald-300 bg-emerald-50 px-4 py-3 shadow-sm"
-						>
-							<p className="text-sm font-semibold text-emerald-800">
-								Request received ✅
-							</p>
-							<p className="mt-1 text-sm text-emerald-700">{submitSuccess}</p>
-						</div>
-					)}
-					{submitError && !submitSuccess && (
-						<p className="text-rose-600">{submitError}</p>
-					)}
-				</div>
-			</div>
-		</form>
-	);
+<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+{onCancel && (
+<button
+type="button"
+onClick={onCancel}
+className="sa-btn sa-btn-ghost sa-btn-sm"
+>
+Cancel
+</button>
+)}
+<button
+type="submit"
+disabled={isSubmitDisabled || isSubmitting || Boolean(submitSuccess)}
+className="sa-btn sa-btn-primary sa-btn-sm"
+style={
+isSubmitDisabled || isSubmitting || Boolean(submitSuccess)
+? { opacity: 0.55, cursor: "not-allowed" }
+: undefined
+}
+>
+{isSubmitting ? "Sending…" : submitSuccess ? "Sent ✓" : "Request Access"}
+</button>
+</div>
+</div>
+</form>
+);
 }
