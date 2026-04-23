@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import demoVideoSrc from "../assets/0423.mp4";
 
 type DemoVideoModalProps = {
 	open: boolean;
@@ -75,7 +76,7 @@ export function DemoVideoModal({ open, onClose }: DemoVideoModalProps) {
 					<video
 						ref={videoRef}
 						className="h-full w-full"
-						src="/scaleable-demo.mp4"
+						src={demoVideoSrc}
 						controls
 						playsInline
 						preload="metadata"

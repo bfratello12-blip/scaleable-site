@@ -9,7 +9,7 @@ export function Hero() {
   return (
     <section
       className="relative overflow-hidden"
-      style={{ paddingTop: 140, paddingBottom: 80, background: "#FFFFFF" }}
+      style={{ paddingTop: 140, paddingBottom: 80, paddingLeft: "1.5rem", paddingRight: "1.5rem", background: "#FFFFFF" }}
     >
       {/* Backdrop */}
       <div className="absolute inset-0 sa-grid-bg pointer-events-none" />
