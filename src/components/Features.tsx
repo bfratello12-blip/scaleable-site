@@ -1,9 +1,10 @@
 ﻿import { motion } from "motion/react";
-import { Eye, GitCompareArrows, Calendar, Package } from "lucide-react";
+import { Eye, GitCompareArrows, Calendar, Package, Network } from "lucide-react";
 import attributionImg from "../assets/Ad Attribution Trend Chart_Profit.png";
 import eventImg from "../assets/Event Performance Comparison_Profit.png";
 import monthlyImg from "../assets/Monthly Performance Table_Profit.png";
 import productImg from "../assets/product_performance_scaleable.png";
+import channelImg from "../assets/channelrevenue_vs_adspend.webp";
 
 type Feat = {
   label: string;
@@ -29,6 +30,20 @@ const items: Feat[] = [
     ],
     image: attributionImg,
     alt: "Attribution Analysis",
+  },
+  {
+    label: "Channel Impact",
+    icon: Network,
+    title: "See How Ad Spend Lifts Every Channel",
+    description:
+      "Paid ads don't just drive paid revenue — they ripple into your direct, organic, and unknown channels too. Visualize ad spend alongside each channel to see the true halo effect of your campaigns.",
+    bullets: [
+      "Compare ad spend against organic, direct, paid, and unknown revenue side by side",
+      "Spot when scaling paid lifts (or drags down) other acquisition channels",
+      "Quantify the halo effect that single-channel ROAS dashboards completely miss",
+    ],
+    image: channelImg,
+    alt: "Channel Revenue vs Ad Spend",
   },
   {
     label: "Event Tracking",
