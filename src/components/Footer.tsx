@@ -1,5 +1,5 @@
 import { Mail } from "lucide-react";
-import logo from "figma:asset/9e77f0b9e3f695977cea5c5b951b71cf2270fb05.png";
+import logo from "../assets/ScaleAble_Logo1.png";
 
 const productLinks = [
   { label: "Features", href: "/#solution" },
@@ -53,8 +53,7 @@ export function Footer() {
                 alt="ScaleAble"
                 style={{
                   height: 40,
-                  filter:
-                    "brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,0.4))",
+                  filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.4))",
                 }}
               />
             </a>
