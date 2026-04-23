@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { ArrowRight, Play, TrendingUp, Sparkles } from "lucide-react";
-import dashboardImage from "../assets/scaleable_dashboard_hero_updated.png";
+import dashboardImage from "../assets/scaleabledashboard_homescreenview.webp";
 import { useDemoModal } from "./DemoModalProvider";
 
 export function Hero() {
