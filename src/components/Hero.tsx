@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { ArrowRight, Play, TrendingUp, Sparkles } from "lucide-react";
-import dashboardImage from "../assets/scaleabledashboard_homescreenview.webp";
+import dashboardImage from "../assets/scaleabledashboard_homescreenview2.webp";
 import { useDemoModal } from "./DemoModalProvider";
 
 export function Hero() {
@@ -60,9 +60,8 @@ export function Hero() {
               }}
             >
               Scale Ad Spend Based on{" "}
-              <span className="sa-gradient-text">Actual Profit</span>,
-              <br />
-              Not Just ROAS
+              <span className="sa-gradient-text">Actual Profit</span>{" "}
+              — Not ROAS
             </h1>
 
             <p
@@ -74,8 +73,8 @@ export function Hero() {
                 maxWidth: 560,
               }}
             >
-              ScaleAble shows whether increasing ad spend actually increases profit — using real
-              costs and clear cause-and-effect context.
+              Know if increasing ad spend is actually making you more money — with real
+              costs and clear cause-and-effect.
             </p>
 
             <div className="flex flex-wrap" style={{ gap: 12, marginTop: 32 }}>
@@ -177,7 +176,7 @@ export function Hero() {
               style={{ position: "absolute", top: -14, left: -18 }}
             >
               <span className="dot" />
-              True Profit +28.4%
+              Profit +97.3%
             </motion.div>
 
             {/* Floating chip 2 */}
