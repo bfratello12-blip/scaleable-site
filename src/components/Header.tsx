@@ -17,7 +17,7 @@ export function Header() {
     { href: "/#solution", label: "Solution" },
     { href: "/#how-it-works", label: "How It Works" },
     { href: "/#pricing", label: "Pricing" },
-    { href: "/#for-who", label: "For Who" },
+    { href: "/case-studies", label: "Case Studies" },
     { href: "/#faq", label: "FAQ" },
   ];
 

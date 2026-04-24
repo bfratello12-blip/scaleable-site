@@ -25,6 +25,7 @@ import { CookiesPolicyPage } from "./components/CookiesPolicyPage";
 import { SeoManager } from "./components/SeoManager";
 import { NotFoundPage } from "./components/NotFoundPage";
 import { DataDeletionPage } from "./components/DataDeletionPage";
+import { CaseStudiesPage } from "./components/CaseStudiesPage";
 
 export default function App() {
   return (
@@ -54,6 +55,7 @@ export default function App() {
           <Route path="/request-access" element={<RequestAccessPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/case-studies" element={<CaseStudiesPage />} />
           <Route path="/help-center" element={<HelpCenterPage />} />
           <Route path="/help-center/getting-started" element={<GettingStartedPage />} />
           <Route

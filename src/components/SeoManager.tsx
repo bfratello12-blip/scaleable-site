@@ -13,6 +13,11 @@ const routeMeta: Record<string, { title: string; description: string }> = {
     title: "About ScaleAble",
     description: "Built for brands that want to scale profit — not just revenue.",
   },
+  "/case-studies": {
+    title: "Case Studies | ScaleAble",
+    description:
+      "See how ecommerce brands grew profit and True ROAS using ScaleAble's profit-first reporting.",
+  },
   "/contact": {
     title: "Contact ScaleAble",
     description: "Reach the ScaleAble team for support, access, or questions.",
