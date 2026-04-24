@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Sparkles, TrendingUp, ArrowRight, Calendar } from "lucide-react";
 import { Card } from "./ui/card";
+import brand1Image from "../assets/Brand 1 Performance.png";
+import brand2Image from "../assets/Brand 2 Performance.png";
+import brand3Image from "../assets/Brand 3 Performance.png";
 
 type CaseStudy = {
   slug: string;
@@ -20,7 +23,7 @@ const caseStudies: CaseStudy[] = [
     headline: "+97% profit and +34% True ROAS within 30 days.",
     summary:
       "By shifting spend toward profit-positive campaigns and trimming hidden margin leaks, Brand 1 nearly doubled profit in a single month while improving True ROAS by 34%.",
-    image: "/case-studies/brand-1.png",
+    image: brand1Image,
     timeframe: "30 days",
     highlights: [
       { label: "Profit", value: "+97.3%" },
@@ -35,7 +38,7 @@ const caseStudies: CaseStudy[] = [
     headline: "+76% profit growth for a brand previously at a plateau.",
     summary:
       "After months of stagnant returns, Brand 2 used profit-first reporting to identify wasted spend and reallocate budget — unlocking a 76% jump in profit without scaling spend recklessly.",
-    image: "/case-studies/brand-2.png",
+    image: brand2Image,
     timeframe: "Quarter over quarter",
     highlights: [
       { label: "Profit", value: "+75.7%" },
@@ -50,7 +53,7 @@ const caseStudies: CaseStudy[] = [
     headline: "+32% profit growth within the first three weeks.",
     summary:
       "Brand 3 plugged ScaleAble in and saw real cost-and-margin clarity for the first time. Within three weeks, profit climbed 32% while ad efficiency stayed strong.",
-    image: "/case-studies/brand-3.png",
+    image: brand3Image,
     timeframe: "First 3 weeks",
     highlights: [
       { label: "Profit", value: "+32.3%" },
@@ -73,20 +76,20 @@ export function CaseStudiesPage() {
       <div className="absolute -top-24 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
       <div className="absolute -bottom-24 left-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
 
-      <div className="max-w-6xl mx-auto px-6 py-28 relative">
-        <header className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4">
+      <div className="max-w-6xl mx-auto px-6 py-32 relative">
+        <header className="max-w-3xl mx-auto text-center mb-20 sm:mb-24">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Sparkles className="h-4 w-4 text-primary" />
             <span className="text-sm font-semibold text-primary">Case Studies</span>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-[1.15] tracking-tight">
             Real brands. Real profit growth.
           </h1>
-          <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-8 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
             Snapshots from inside the ScaleAble dashboard — showing what
             profit-first reporting unlocks for ecommerce brands.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <a href="/request-access" className="sa-btn sa-btn-primary">
               Get a free profit audit
             </a>
@@ -96,7 +99,7 @@ export function CaseStudiesPage() {
           </div>
         </header>
 
-        <div className="flex flex-col gap-12 md:gap-16">
+        <div className="flex flex-col gap-20 md:gap-28">
           {caseStudies.map((cs, idx) => (
             <CaseStudyCard
               key={cs.slug}
@@ -107,15 +110,15 @@ export function CaseStudiesPage() {
           ))}
         </div>
 
-        <div className="mt-20 rounded-3xl border border-border bg-white shadow-lg p-8 sm:p-12 text-center">
+        <div className="mt-28 sm:mt-32 rounded-3xl border border-border bg-white shadow-lg p-10 sm:p-14 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
             Want results like these for your brand?
           </h2>
-          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+          <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
             Request a free profit audit and we’ll show you exactly where your
             margin is leaking — and how much you could be scaling profitably.
           </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <a href="/request-access" className="sa-btn sa-btn-primary">
               Request free profit audit
             </a>
@@ -149,7 +152,7 @@ function CaseStudyCard({
           reversed ? "lg:[&>*:first-child]:order-2" : ""
         }`}
       >
-        <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-4 sm:p-6 flex items-center justify-center">
+        <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-6 sm:p-10 flex items-center justify-center">
           {!imgError ? (
             <img
               src={caseStudy.image}
@@ -168,8 +171,8 @@ function CaseStudyCard({
           )}
         </div>
 
-        <div className="p-8 sm:p-10 flex flex-col justify-center">
-          <div className="inline-flex items-center gap-2 self-start px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-4">
+        <div className="p-10 sm:p-14 flex flex-col justify-center">
+          <div className="inline-flex items-center gap-2 self-start px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-5">
             <TrendingUp className="h-3.5 w-3.5 text-emerald-600" />
             <span className="text-xs font-semibold text-emerald-700 tracking-wide uppercase">
               {caseStudy.timeframe}
@@ -179,23 +182,23 @@ function CaseStudyCard({
           <p className="text-sm font-semibold text-primary tracking-wide uppercase">
             {caseStudy.brand}
           </p>
-          <h2 className="mt-2 text-2xl sm:text-3xl font-bold text-foreground leading-tight">
+          <h2 className="mt-3 text-2xl sm:text-3xl font-bold text-foreground leading-tight">
             {caseStudy.headline}
           </h2>
-          <p className="mt-4 text-base text-slate-700 leading-relaxed">
+          <p className="mt-5 text-base text-slate-700 leading-relaxed">
             {caseStudy.summary}
           </p>
 
-          <div className="mt-6 grid grid-cols-2 gap-3">
+          <div className="mt-8 grid grid-cols-2 gap-4">
             {caseStudy.highlights.map((h) => (
               <div
                 key={h.label}
-                className="rounded-xl border border-border bg-secondary/30 px-4 py-3"
+                className="rounded-xl border border-border bg-secondary/30 px-4 py-4"
               >
                 <div className="text-xs text-muted-foreground uppercase tracking-wide">
                   {h.label}
                 </div>
-                <div className="mt-1 text-lg font-bold text-foreground">
+                <div className="mt-2 text-lg font-bold text-foreground">
                   {h.value}
                 </div>
               </div>
@@ -205,7 +208,7 @@ function CaseStudyCard({
           <button
             type="button"
             onClick={onCta}
-            className="sa-btn sa-btn-primary mt-7 self-start inline-flex items-center"
+            className="sa-btn sa-btn-primary mt-10 self-start inline-flex items-center"
           >
             Get my free profit audit
             <ArrowRight className="h-4 w-4 ml-2" />
