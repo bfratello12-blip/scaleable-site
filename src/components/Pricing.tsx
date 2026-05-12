@@ -18,7 +18,7 @@ type Plan = {
 const plans: Plan[] = [
   {
     name: "ScaleAble DIY",
-    price: "$79",
+    price: "$49",
     period: "per month",
     description: "For founders who want answers, not guesswork",
     features: [
