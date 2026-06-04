@@ -11,14 +11,14 @@ type Plan = {
   highlighted?: boolean;
   badge?: string;
   features: string[];
-  primary: { label: string; action: "request" | "demo" | "book"; href?: string };
-  secondary?: { label: string; action: "request" | "demo" | "book"; href?: string };
+  primary: { label: string; action: "request" | "demo" | "book" | "link"; href?: string };
+  secondary?: { label: string; action: "request" | "demo" | "book" | "link"; href?: string };
 };
 
 const plans: Plan[] = [
   {
     name: "ScaleAble DIY",
-    price: "$49",
+    price: "$29",
     period: "per month",
     description: "For founders who want answers, not guesswork",
     features: [
@@ -30,7 +30,11 @@ const plans: Plan[] = [
       "One time ad account audit for Google and Meta",
       "Email support",
     ],
-    primary: { label: "Request Access", action: "request" },
+    primary: {
+      label: "View Shopify App",
+      action: "link",
+      href: "https://apps.shopify.com/scaleable?search_id=6712a60d-86b3-4cb2-a7fc-f3c5c1581b69&surface_detail=scaleable&surface_inter_position=1&surface_intra_position=1&surface_type=search",
+    },
     secondary: { label: "Watch Demo", action: "demo" },
   },
   {
@@ -77,6 +81,7 @@ export function Pricing() {
   const handle = (a: Plan["primary"]) => {
     if (a.action === "request") navigate("/request-access");
     else if (a.action === "demo") openDemo();
+    else if (a.action === "link" && a.href) window.open(a.href, "_blank", "noopener,noreferrer");
     else if (a.action === "book" && a.href) navigate(a.href);
   };
 
