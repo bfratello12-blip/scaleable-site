@@ -10,6 +10,7 @@ type Plan = {
   description: string;
   highlighted?: boolean;
   badge?: string;
+  trial?: string;
   features: string[];
   primary: { label: string; action: "request" | "demo" | "book" | "link"; href?: string };
   secondary?: { label: string; action: "request" | "demo" | "book" | "link"; href?: string };
@@ -21,6 +22,7 @@ const plans: Plan[] = [
     price: "$29",
     period: "per month",
     description: "For founders who want answers, not guesswork",
+    trial: "14 day free trial",
     features: [
       "Full ScaleAble platform access",
       "Blended MER, contribution and profit metrics",
@@ -28,11 +30,10 @@ const plans: Plan[] = [
       "Google Ads and Meta Ads integrations",
       "Initial setup and configuration",
       "One time ad account audit for Google and Meta",
-      "14 day free trial",
       "Email support",
     ],
     primary: {
-      label: "Try it For Free",
+      label: "Try it Free",
       action: "link",
       href: "https://apps.shopify.com/scaleable?search_id=6712a60d-86b3-4cb2-a7fc-f3c5c1581b69&surface_detail=scaleable&surface_inter_position=1&surface_intra_position=1&surface_type=search",
     },
@@ -184,6 +185,27 @@ export function Pricing() {
                 >
                   {p.description}
                 </p>
+                {p.trial && (
+                  <span
+                    style={{
+                      marginTop: 12,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                      padding: "6px 12px",
+                      borderRadius: 999,
+                      background: "linear-gradient(180deg, rgba(16,185,129,0.12), rgba(16,185,129,0.06))",
+                      border: "1px solid rgba(16,185,129,0.35)",
+                      color: "var(--sa-green)",
+                      fontSize: 13,
+                      fontWeight: 700,
+                      letterSpacing: "0.02em",
+                    }}
+                  >
+                    <Sparkles className="h-3.5 w-3.5" />
+                    {p.trial}
+                  </span>
+                )}
               </div>
 
               <div style={{ marginTop: 20, display: "flex", alignItems: "baseline", gap: 8 }}>
