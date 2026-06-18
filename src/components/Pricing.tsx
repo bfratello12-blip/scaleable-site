@@ -28,10 +28,11 @@ const plans: Plan[] = [
       "Google Ads and Meta Ads integrations",
       "Initial setup and configuration",
       "One time ad account audit for Google and Meta",
+      "14 day free trial",
       "Email support",
     ],
     primary: {
-      label: "View Shopify App",
+      label: "Try it For Free",
       action: "link",
       href: "https://apps.shopify.com/scaleable?search_id=6712a60d-86b3-4cb2-a7fc-f3c5c1581b69&surface_detail=scaleable&surface_inter_position=1&surface_intra_position=1&surface_type=search",
     },

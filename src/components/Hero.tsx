@@ -59,9 +59,9 @@ export function Hero() {
                 color: "var(--sa-ink-900)",
               }}
             >
-              Scale Ad Spend Based on{" "}
-              <span className="sa-gradient-text">Actual Profit</span>{" "}
-              — Not ROAS
+              Scale Profitably With{" "}
+              <span className="sa-gradient-text">Real Profit Data</span>{" "}
+              — Not Platform ROAS
             </h1>
 
             <p
