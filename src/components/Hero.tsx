@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { ArrowRight, Play, TrendingUp, Sparkles } from "lucide-react";
 import dashboardImage from "../assets/scaleabledashboard_homescreenview2.webp";
 import { useDemoModal } from "./DemoModalProvider";
+import { shopifyAppStoreUrl } from "./site/links";
 
 export function Hero() {
   const { openDemo } = useDemoModal();
@@ -80,6 +81,15 @@ export function Hero() {
             <div className="flex flex-wrap" style={{ gap: 12, marginTop: 32 }}>
               <a href="#pricing" className="sa-btn sa-btn-primary sa-btn-lg">
                 Get Started
+                <ArrowRight className="h-5 w-5" />
+              </a>
+              <a
+                href={shopifyAppStoreUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sa-btn sa-btn-secondary sa-btn-lg"
+              >
+                View on Shopify
                 <ArrowRight className="h-5 w-5" />
               </a>
               <button type="button" onClick={() => openDemo()} className="sa-btn sa-btn-secondary sa-btn-lg">

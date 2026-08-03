@@ -1,0 +1,1 @@
+export const shopifyAppStoreUrl = "https://apps.shopify.com/scaleable";

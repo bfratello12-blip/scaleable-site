@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { Check, Sparkles } from "lucide-react";
 import { useDemoModal } from "./DemoModalProvider";
 import { useNavigate } from "react-router-dom";
+import { shopifyAppStoreUrl } from "./site/links";
 
 type Plan = {
   name: string;
@@ -35,7 +36,7 @@ const plans: Plan[] = [
     primary: {
       label: "Try it Free",
       action: "link",
-      href: "https://apps.shopify.com/scaleable?search_id=6712a60d-86b3-4cb2-a7fc-f3c5c1581b69&surface_detail=scaleable&surface_inter_position=1&surface_intra_position=1&surface_type=search",
+      href: shopifyAppStoreUrl,
     },
     secondary: { label: "Watch Demo", action: "demo" },
   },
