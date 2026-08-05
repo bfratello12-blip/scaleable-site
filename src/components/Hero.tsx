@@ -78,20 +78,39 @@ export function Hero() {
               costs and clear cause-and-effect.
             </p>
 
-            <div className="flex flex-wrap" style={{ gap: 12, marginTop: 32 }}>
+            <div className="flex flex-wrap items-start" style={{ gap: 12, marginTop: 32 }}>
               <a href="#pricing" className="sa-btn sa-btn-primary sa-btn-lg">
                 Get Started
                 <ArrowRight className="h-5 w-5" />
               </a>
-              <a
-                href={shopifyAppStoreUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="sa-btn sa-btn-secondary sa-btn-lg"
-              >
-                View on Shopify
-                <ArrowRight className="h-5 w-5" />
-              </a>
+              <div className="flex flex-col items-center" style={{ gap: 8 }}>
+                <a
+                  href={shopifyAppStoreUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="sa-btn sa-btn-lg"
+                  style={{
+                    background: "linear-gradient(180deg, #22C55E 0%, #16A34A 100%)",
+                    color: "#FFFFFF",
+                    border: "1px solid rgba(22,163,74,0.42)",
+                    boxShadow: "0 16px 32px -14px rgba(22,163,74,0.55)",
+                  }}
+                >
+                  Install Free on Shopify
+                  <ArrowRight className="h-5 w-5" />
+                </a>
+                <span
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: "0.04em",
+                    textTransform: "uppercase",
+                    color: "#16A34A",
+                  }}
+                >
+                  14-Day Free Trial
+                </span>
+              </div>
               <button type="button" onClick={() => openDemo()} className="sa-btn sa-btn-secondary sa-btn-lg">
                 <Play className="h-4 w-4" />
                 Watch Demo
